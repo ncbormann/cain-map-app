@@ -1,0 +1,95 @@
+<script lang="ts">
+    import * as d3 from 'd3'
+    let {actors = $bindable(),
+        subActors = $bindable(),
+        dates = $bindable()} = $props() 
+
+
+    function removeActor(a) {
+        actors = actors.filter(x => x !== a);
+    }
+
+    function removeSubActor(obj) {
+        subActors = subActors.filter(
+            x => !(x.name === obj.name && x.country === obj.country)
+        );
+    }
+
+    const monthYear = new Intl.DateTimeFormat('en', {
+        month: 'short',
+        year: 'numeric'
+        });
+
+
+
+
+    // function clearAll() {
+    //     actors = [];
+    //     subActors = [];
+    // }
+</script>
+
+{#if actors.length || subActors.length || dates.length}
+<div class="filters">
+    <!-- Actor groups -->
+    {#each actors as a}
+        <span class="chip">
+            {a}
+            <button onclick={() => removeActor(a)}>✕</button>
+        </span>
+    {/each}
+
+    <!-- Subactors from Search -->
+    {#each subActors as sa}
+        <span class="chip">
+            {sa.name} ({sa.country})
+            <button onclick={() => removeSubActor(sa)}>✕</button>
+        </span>
+    {/each}
+
+    <!-- Dates from timeline-->
+    {#if dates.length === 2}
+  <span class="chip">
+    {monthYear.format(dates[0])} – {monthYear.format(dates[1])}
+    <button onclick={() => dates = []}>✕</button>
+  </span>
+{/if}
+
+
+</div>
+{/if}
+
+
+
+<style>
+    .filters {
+        position: absolute;
+        top: calc(1rem + 4.5rem);
+        left: 50%;
+        transform: translateX(-50%); /* center parent if you want toolbar and filters centered */
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        z-index: 20;
+        width: 420px; /* same as toolbar max-width */
+    }
+
+    .chip {
+        background: #eee;
+        padding: 0.35rem 0.6rem;
+        border-radius: 14px;
+        display: flex;
+        align-items: left;
+        gap: 0.4rem;
+        font-size: 0.85rem;
+    }
+
+    .chip button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+
+</style>
