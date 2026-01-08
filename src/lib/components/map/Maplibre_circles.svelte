@@ -4,25 +4,25 @@
 
 
   let {zoom = $bindable(), filteredData} = $props()
-  let showModal = $state(false);
-  let modalText = $state("");
-  let modalDate = $state("")
+  // let showModal = $state(false);
+  // let modalText = $state("");
+  // let modalDate = $state("")
 
 
-  function openFullText(index, date) {
-    const row = fullTextData.find(d => d.index == index);
-    modalText = row ? row.text : "No text available.";
-    modalDate = date;
-    showModal = true;
-  }
+  // function openFullText(index, date) {
+  //   const row = fullTextData.find(d => d.index == index);
+  //   modalText = row ? row.text : "No text available.";
+  //   modalDate = date;
+  //   showModal = true;
+  // }
 
-  function closeModal() {
-    showModal = false;
-  }
+  // function closeModal() {
+  //   showModal = false;
+  // }
 
 </script>
 
-{#if showModal}
+<!-- {#if showModal}
   <div class="modal-backdrop" onclick={closeModal}></div>
     <div class="modal">
       <button class="close-btn" onclick={closeModal}>×</button>
@@ -31,7 +31,7 @@
           <p>{modalText}</p>
         </div>
   </div>
-{/if}
+{/if} -->
 
 
 <MapLibre 
@@ -125,13 +125,13 @@
               <div class="deaths">Deaths: {data.properties.deaths}</div>
             {/if}
             <!-- Button removed pending external sourcing of primary materials -->
-            <button 
+            <!-- <button 
               class="fulltext-btn"
               onclick={() => openFullText(data.properties.index, data.properties.date)}
             >
               Full report text
-            </button>
-          </div>
+            </button> -->
+          </div> 
 
         {:else}
           <div class="map-popup">No data available</div>
