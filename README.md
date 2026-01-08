@@ -1,38 +1,24 @@
-# sv
+This is a svelte app using svelte-maplibre and presenting research data from the CAIN project.
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Prerequisites
 
-## Creating a project
+- [Node.js LTS](https://nodejs.org/) installed
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Setup
 
-```bash
-# create a new project in the current directory
-npx sv create
+Clone the repository and install dependencies:
 
-# create a new project in my-app
-npx sv create my-app
-```
+git clone <repo-url>
+cd <repo-folder>
+npm install
 
-## Developing
+The data to populate the map is not included in this repo; to run the app with the data, save the raw data file (csv) AND the lookup table ("all_actors_simpliefied_website_2521204.csv") into the scripts file, then run the preprocessing script in R which will generate the json necessary to run the app.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Run development server
 
-```bash
 npm run dev
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Run production version
 
-## Building
-
-To create a production version of your app:
-
-```bash
 npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+npm run preview
