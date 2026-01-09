@@ -4,6 +4,9 @@
 
 
   let {zoom = $bindable(), filteredData} = $props()
+
+
+
   // let showModal = $state(false);
   // let modalText = $state("");
   // let modalDate = $state("")
@@ -20,6 +23,8 @@
   //   showModal = false;
   // }
 
+
+
 </script>
 
 <!-- {#if showModal}
@@ -33,9 +38,10 @@
   </div>
 {/if} -->
 
+<!-- style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json" -->
+<MapLibre  
 
-<MapLibre 
-  style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+  style = "https://api.maptiler.com/maps/019ba32c-43d2-74ac-bdba-1768cc85c5c2/style.json?key=GDx9s6OzDP05pKKgG4wT"
   center={[14,52]}
   bind:zoom={zoom} 
 >
@@ -146,10 +152,6 @@
 
 <style>
 
-  .maplibregl-popup-content {
-  pointer-events: auto;
-  }
-
 
   /* Outer popup wrapper */
   .map-popup {
@@ -193,7 +195,7 @@
   }
 
   /* Button for modal */
-  .fulltext-btn {
+  /* .fulltext-btn {
     margin-top: 6px;
     padding: 6px 10px;
     font-size: 0.8rem;
@@ -204,21 +206,21 @@
     color: #383C42;
     font-weight: 600;
     transition: background 0.2s;
-  }
+  } */
 
-  .fulltext-btn:hover {
+  /* .fulltext-btn:hover {
     background: #e0b000;
-  }
+  } */
 
-  .modal-backdrop {
+  /* .modal-backdrop {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.45);
     z-index: 2000;
-  }
+  } */
 
   /* Modal box */
-  .modal {
+  /* .modal {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -229,10 +231,10 @@
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     z-index: 2001;
-  }
+  } */
 
   /* Close button */
-  .close-btn {
+  /* .close-btn {
     position: absolute;
     top: 8px;
     right: 12px;
@@ -241,10 +243,10 @@
     font-size: 1.6rem;
     cursor: pointer;
     line-height: 1;
-  }
+  } */
 
   /* Text inside modal */
-  .modal-content {
+  /* .modal-content {
     max-height: 65vh;
     overflow-y: auto;
     padding-right: 8px;
@@ -259,6 +261,6 @@
   .modal-content p {
     white-space: pre-wrap;
     line-height: 1.45;
-  }
+  } */
 
 </style>
