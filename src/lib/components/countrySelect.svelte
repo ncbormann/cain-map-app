@@ -1,5 +1,5 @@
 <script lang="ts">
-  let { country = $bindable(), uniqueCountries } = $props();
+  let { country = $bindable(), uniqueCountries,} = $props();
   let open = $state(false);
 
   function selectCountry(c: string) {
@@ -11,7 +11,7 @@
 
 <div class="dropdown">
   <button class="dropdown-button" onclick={() => (open = !open)}>
-    Country ▾
+    {country ?? 'Country'} ▾
   </button>
 
   {#if open}
@@ -35,7 +35,7 @@
 <style>
 .dropdown-menu {
   position: absolute;
-  top: 105%;          /* sit just below the button */
+  top: 105%;         
   left: 0;
 
   background: white;
@@ -48,15 +48,16 @@
   z-index: 200;
 }
 
+
 .menu-list {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem; /* space between items */
+  gap: 0.25rem;
 }
 
 .menu-item {
-  padding: 0.4rem 0.6rem;        /* 👈 breathing room */
+  padding: 0.4rem 0.6rem;     
   text-align: left;
   background: transparent;
   border: none;

@@ -3,7 +3,9 @@
     let {actors = $bindable(),
         subActors = $bindable(),
         dates = $bindable(),
-        country = $bindable()} = $props() 
+        country = $bindable(),
+        // selectedCountries = $bindable(),
+        uniqueCountries} = $props() 
 
 
     function removeActor(a) {
@@ -17,9 +19,9 @@
     }
 
     function removeCountry() {
-        country = null;
-    }
-
+    country = null;
+    // selectedCountries = [...uniqueCountries];
+  }
 
     const monthYear = new Intl.DateTimeFormat('en', {
         month: 'short',

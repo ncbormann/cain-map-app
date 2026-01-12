@@ -1,12 +1,9 @@
 <script lang="ts">
     let {subActors = $bindable(), //this is the object we use for the filtering
-        uniqueSubActorsTest,
         uniqueSubActors} = $props() // this is the reference list
         let searchTerm = $state('');
         let showSuggestions = $state(false);
         let selectedIndex = $state(-1);
-
-        console.log(uniqueSubActors)
 
 
 
@@ -34,7 +31,6 @@
                         ];
                     }
 
-            console.log(subActors);
             searchTerm = ""
         }
 

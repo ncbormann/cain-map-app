@@ -1,6 +1,14 @@
 <script lang="ts">
-  let { actors = $bindable(), uniqueActors } = $props();
+  let { actors = $bindable(), availableGroups } = $props();
   let open = $state(false);
+
+  function toggleActor(group: string) {
+    if (actors.includes(group)) {
+      actors = actors.filter(a => a !== group);
+    } else {
+      actors = [...actors, group];
+    }
+  }
 </script>
 
 <div class="dropdown">
@@ -12,23 +20,23 @@
     <div class="dropdown-menu">
       <fieldset>
         <legend>Select groups</legend>
-        {#each uniqueActors as actorName}
+
+        {#each availableGroups as group}
           <label class="checkbox-item">
             <input
               type="checkbox"
-              value={actorName}
-              bind:group={actors}
-              onchange={() => open = false}
+              value={group}
+              checked={actors.includes(group)}
+              onchange={() => toggleActor(group)}
             />
-            {actorName}
+            {group}
           </label>
         {/each}
+
       </fieldset>
     </div>
   {/if}
 </div>
-
-
 
 <style>
   .dropdown {
@@ -39,7 +47,7 @@
 
   .dropdown-button {
     padding: 0.5rem 0.75rem;
-    font-family:'Roboto Condensed', sans-serif;;
+    font-family: 'Roboto Condensed', sans-serif;
     font-weight: 400;
     background: white;
     border: 1px solid #ccc;

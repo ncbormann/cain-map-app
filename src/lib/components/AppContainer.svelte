@@ -15,16 +15,35 @@
     let country = $state(null)
 
 
-
-    const uniqueActors = [...new Set(
-        europeGeoJson.features.map(f => f.properties.actor_group_a_reduced)
-    )];
-
     const uniqueCountries= [...new Set(
         europeGeoJson.features.map(f => f.properties.country_coded)
     )];
 
-    
+
+
+    const uniqueActors = [
+    ...new Map(
+        europeGeoJson.features.flatMap(f => [
+            { group: f.properties.actor_group_a_reduced, country: f.properties.country_coded },
+            { group: f.properties.actor_group_b_reduced, country: f.properties.country_coded }
+        ])
+        .filter(x => x.group && x.country)                  // remove empty entries
+        .map(x => [`${x.group}::${x.country}`, x])         // map for uniqueness
+    ).values()
+    ];
+
+
+    let availableGroups = $derived.by(() => {
+        return [
+            ...new Set(
+                uniqueActors
+                    .filter(a => !country || a.country === country) 
+                    .map(a => a.group)
+            )
+        ];
+    });
+
+
     const uniqueSubActors = [
         ...new Map(
             europeGeoJson.features.flatMap(f => [
@@ -36,7 +55,11 @@
         ).values()
     ];
 
-
+    const availableSubActors = $derived(
+        country
+            ? uniqueSubActors.filter(sa => sa.country === country)
+            : uniqueSubActors
+        );
 
 
     function filterFeatures() {
@@ -80,8 +103,6 @@
     });
 }
 
-
-
 let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 
 </script>
@@ -91,8 +112,8 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
     <div class="toolbar-wrapper">
         <div id="toolbar">
             <CountrySelector uniqueCountries={uniqueCountries} bind:country={country}/>
-            <ActorSelector uniqueActors={uniqueActors} bind:actors={actors}/>
-            <Search uniqueSubActors={uniqueSubActors}
+            <ActorSelector availableGroups={availableGroups} bind:actors={actors}/>
+            <Search uniqueSubActors={availableSubActors}
                     bind:subActors={subActors} />
         </div>
 
@@ -100,7 +121,8 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
     <ActiveFilters  bind:actors={actors} 
     bind:subActors={subActors} 
     bind:dates={dates}
-    bind:country={country}/>
+    bind:country={country}
+    uniqueCountries/>
     
     <MapCircles bind:zoom={mapZoom} 
     filteredData={filteredData}/> 
