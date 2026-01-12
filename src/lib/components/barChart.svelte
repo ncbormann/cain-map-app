@@ -1,20 +1,54 @@
 <script>
     import * as d3 from 'd3'
-    let {filteredData, dates = $bindable()} = $props()
+    let {filteredData, dates = $bindable(), countryTimelineOnly = $bindable(), country} = $props()
     let consistentData = filteredData
-    let backgroundChart = $derived(
-        Array.from(
+
+
+
+    // let backgroundChart = $derived(
+    //     Array.from(
+    //         d3.rollup(
+    //         consistentData.features,
+    //         v => v.length,
+    //         d => +d3.timeMonth.floor(new Date(d.properties.date))
+    //         ),
+    //         ([timestamp, count]) => ({
+    //         month: new Date(timestamp),
+    //         count
+    //         })
+    //     ).sort((a, b) => a.month - b.month)
+    //     );
+
+    let timelineFeatures = $derived.by(() => {
+    // Toggle OFF → always show whole-Europe timeline
+        if (!countryTimelineOnly || !country) {
+            return consistentData.features;
+        }
+
+        // Toggle ON → country-only timeline
+        return consistentData.features.filter(
+            f => f.properties.country_coded === country
+        );
+    });
+
+
+    let backgroundChart = $derived.by(() => {
+        return Array.from(
             d3.rollup(
-            consistentData.features,
-            v => v.length,
-            d => +d3.timeMonth.floor(new Date(d.properties.date))
+                timelineFeatures,
+                v => v.length,
+                d => +d3.timeMonth.floor(new Date(d.properties.date))
             ),
             ([timestamp, count]) => ({
-            month: new Date(timestamp),
-            count
+                month: new Date(timestamp),
+                count
             })
-        ).sort((a, b) => a.month - b.month)
-        );
+        ).sort((a, b) => a.month - b.month);
+    });
+
+
+
+
 
     let chartData = $derived(
     Array.from(
@@ -28,8 +62,10 @@
     })).sort((a, b) => a.month - b.month) 
     );
 
-    let month_count = chartData.length;
-    let bar_height = d3.max(chartData, (d) => d.count);
+    let month_count = $derived(backgroundChart.length);
+    let bar_height = $derived(
+        d3.max(backgroundChart, d => d.count) ?? 0
+    );
 
     let width = 928;
     let height = 100;
@@ -39,10 +75,13 @@
     let marginLeft = 40;
     let brush;
     let brushLayer;
+    let prevDomain = null;
     let selectedStart = $state(null);
     let selectedEnd = $state(null);
     let axisLayer;
     let hadDates = $state(false);
+    
+
 
     let tooltipText = $state('');
     let tooltipX = $state(0);
@@ -52,15 +91,37 @@
     const innerHeight = height - marginTop - marginBottom;
 
 
-    const xScale = d3
-        .scaleTime()
-        .domain(d3.extent(filteredData.features, d =>  new Date(d.properties.date))) 
-        .range([0, innerWidth]);
+    let xScale = $derived.by(() =>
+        d3.scaleTime()
+            .domain(
+                d3.extent(
+                    timelineFeatures,
+                    d => new Date(d.properties.date)
+                )
+            )
+            .range([0, innerWidth])
+    );
 
-    const yScale = d3
-        .scaleLinear()
-        .domain([0, bar_height])
-        .range([0, innerHeight]);
+    let yScale = $derived.by(() =>
+        d3.scaleLinear()
+            .domain([0, bar_height])
+            .range([0, innerHeight])
+    );
+
+
+    $effect(() => {
+        if (!axisLayer) return;
+
+        const xAxis = d3.axisBottom(xScale)
+            .ticks(d3.timeYear.every(1))   // yearly ticks
+            .tickFormat(d3.timeFormat("%Y")); // only show year
+
+
+        const g = d3.select(axisLayer);
+        g.call(xAxis);
+        g.selectAll("text")
+            .style("font-size", "10px");
+    });
 
     $effect(() => {
     if (!brushLayer) return;
@@ -113,22 +174,7 @@
         hadDates = hasDates;
         });
 
-
-    $effect(() => {
-        if (!axisLayer) return;
-
-        const xAxis = d3.axisBottom(xScale)
-            .ticks(d3.timeYear.every(1))   // yearly ticks
-            .tickFormat(d3.timeFormat("%Y")); // only show year
-
-
-        const g = d3.select(axisLayer);
-        g.call(xAxis);
-        g.selectAll("text")
-            .style("font-size", "10px");
-    });
-
-
+    
 
 </script>
 

@@ -13,6 +13,7 @@
     let subActors = $state([]) 
     let dates = $state([])
     let country = $state(null)
+    let countryTimelineOnly = $state(false);
 
 
     const uniqueCountries= [...new Set(
@@ -63,7 +64,6 @@
             return countryOk && groupOk;
         });
     });
-
 
 
     function filterFeatures() {
@@ -121,12 +121,23 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
                     bind:subActors={subActors} />
         </div>
 
+        {#if country}
+            <label class="country-toggle">
+                <input type="checkbox" 
+                bind:checked={countryTimelineOnly}
+                onchange={() => { dates = []; }} />
+                Show timeline for {country} only
+            </label>
+        {/if}
+
+
     </div>
     <ActiveFilters  bind:actors={actors} 
     bind:subActors={subActors} 
     bind:dates={dates}
     bind:country={country}
-    uniqueCountries/>
+    uniqueCountries
+    bind:countryTimelineOnly={countryTimelineOnly}/>
     
     <MapCircles bind:zoom={mapZoom} 
     filteredData={filteredData}/> 
@@ -134,7 +145,7 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 
 
 <div id="timeline">
-    <BarChart filteredData={filteredData} bind:dates = {dates}/>
+    <BarChart filteredData={filteredData} bind:dates = {dates} countryTimelineOnly={countryTimelineOnly} country={country}/>
 
 </div>
 
@@ -213,5 +224,17 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
         box-shadow: 0 -3px 12px rgba(0,0,0,0.2);
 
         padding: 0.5rem 1rem;
+    }
+
+    .country-toggle {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    gap: 0.4rem;
+    margin-left: 1rem;
+    z-index: 50;
+    }
+    .country-toggle input[type="checkbox"] {
+        cursor: pointer;
     }
 </style>

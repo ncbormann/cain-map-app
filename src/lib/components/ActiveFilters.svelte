@@ -4,6 +4,7 @@
         subActors = $bindable(),
         dates = $bindable(),
         country = $bindable(),
+        countryTimelineOnly = $bindable(),
         // selectedCountries = $bindable(),
         uniqueCountries} = $props() 
 
@@ -20,6 +21,7 @@
 
     function removeCountry() {
     country = null;
+    countryTimelineOnly = null;
     // selectedCountries = [...uniqueCountries];
   }
 
