@@ -47,19 +47,23 @@
     const uniqueSubActors = [
         ...new Map(
             europeGeoJson.features.flatMap(f => [
-                { name: f.properties.actor_a, country: f.properties.country_coded },
-                { name: f.properties.actor_b, country: f.properties.country_coded }
+                { name: f.properties.actor_a, country: f.properties.country_coded, group: f.properties.actor_group_a_reduced },
+                { name: f.properties.actor_b, country: f.properties.country_coded, group: f.properties.actor_group_b_reduced },
             ])
-            .filter(x => x.name && x.country)
-            .map(x => [`${x.name}::${x.country}`, x]) 
+            .filter(x => x.name && x.country && x.group)
+            .map(x => [`${x.name}::${x.country}`, x])
         ).values()
     ];
 
-    const availableSubActors = $derived(
-        country
-            ? uniqueSubActors.filter(sa => sa.country === country)
-            : uniqueSubActors
-        );
+
+    const availableSubActors = $derived.by(() => {
+        return uniqueSubActors.filter(sa => {
+            const countryOk = !country || sa.country === country;
+            const groupOk   = actors.length === 0 || actors.includes(sa.group);
+            return countryOk && groupOk;
+        });
+    });
+
 
 
     function filterFeatures() {
