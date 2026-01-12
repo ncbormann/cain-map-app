@@ -3,6 +3,7 @@
     import geoEurope from '$lib/data/all_events_no_nulls?raw'
     import BarChart from '$lib/components/barChart.svelte' 
     import ActorSelector from '$lib/components/filterSelect.svelte' 
+    import CountrySelector from '$lib/components/countrySelect.svelte' 
     import ActiveFilters from '$lib/components/ActiveFilters.svelte' 
     import Search from '$lib/components/search.svelte' 
     const europeGeoJson = JSON.parse(geoEurope)
@@ -17,6 +18,10 @@
 
     const uniqueActors = [...new Set(
         europeGeoJson.features.map(f => f.properties.actor_group_a_reduced)
+    )];
+
+    const uniqueCountries= [...new Set(
+        europeGeoJson.features.map(f => f.properties.country_coded)
     )];
 
     
@@ -36,6 +41,13 @@
 
     function filterFeatures() {
     return europeGeoJson.features.filter(f => {
+
+        // 5) COUNTRY FILTER
+        const countryMatch =
+            country
+        ? f.properties.country_coded === country
+        : true;
+
 
         // 1) SPECIFIC ACTOR–COUNTRY FILTER (takes priority)
         const specificActorMatch =
@@ -64,7 +76,7 @@
                   new Date(f.properties.date) <= dates[1]
                 : true;
 
-        return actorMatch && dateMatch;
+        return actorMatch && dateMatch && countryMatch;
     });
 }
 
@@ -78,6 +90,7 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 <div class="container">
     <div class="toolbar-wrapper">
         <div id="toolbar">
+            <CountrySelector uniqueCountries={uniqueCountries} bind:country={country}/>
             <ActorSelector uniqueActors={uniqueActors} bind:actors={actors}/>
             <Search uniqueSubActors={uniqueSubActors}
                     bind:subActors={subActors} />
@@ -86,7 +99,8 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
     </div>
     <ActiveFilters  bind:actors={actors} 
     bind:subActors={subActors} 
-    bind:dates={dates}/>
+    bind:dates={dates}
+    bind:country={country}/>
     
     <MapCircles bind:zoom={mapZoom} 
     filteredData={filteredData}/> 

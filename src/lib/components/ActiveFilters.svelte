@@ -2,7 +2,8 @@
     import * as d3 from 'd3'
     let {actors = $bindable(),
         subActors = $bindable(),
-        dates = $bindable()} = $props() 
+        dates = $bindable(),
+        country = $bindable()} = $props() 
 
 
     function removeActor(a) {
@@ -15,10 +16,17 @@
         );
     }
 
+    function removeCountry() {
+        country = null;
+    }
+
+
     const monthYear = new Intl.DateTimeFormat('en', {
         month: 'short',
         year: 'numeric'
         });
+
+    
 
 
 
@@ -29,8 +37,17 @@
     // }
 </script>
 
-{#if actors.length || subActors.length || dates.length}
+{#if actors.length || subActors.length || dates.length || country}
 <div class="filters">
+
+    <!-- Country -->
+    {#if country}
+        <span class="chip">
+            {country}
+            <button onclick={removeCountry}>✕</button>
+        </span>
+    {/if}
+
     <!-- Actor groups -->
     {#each actors as a}
         <span class="chip">
@@ -49,11 +66,11 @@
 
     <!-- Dates from timeline-->
     {#if dates.length === 2}
-  <span class="chip">
-    {monthYear.format(dates[0])} – {monthYear.format(dates[1])}
-    <button onclick={() => dates = []}>✕</button>
-  </span>
-{/if}
+        <span class="chip">
+            {monthYear.format(dates[0])} – {monthYear.format(dates[1])}
+            <button onclick={() => dates = []}>✕</button>
+        </span>
+    {/if}
 
 
 </div>
