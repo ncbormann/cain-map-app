@@ -19,11 +19,6 @@
         europeGeoJson.features.map(f => f.properties.actor_group_a_reduced)
     )];
 
-    // const uniqueSubActors = [...new Set(
-    //     europeGeoJson.features.flatMap(f => [f.properties.actor_a,
-    //         f.properties.actor_b])
-    // )];
-
     
     const uniqueSubActors = [
         ...new Map(
@@ -91,8 +86,7 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
     </div>
     <ActiveFilters  bind:actors={actors} 
     bind:subActors={subActors} 
-    bind:dates={dates}
-    bind:country={country}/>
+    bind:dates={dates}/>
     
     <MapCircles bind:zoom={mapZoom} 
     filteredData={filteredData}/> 
