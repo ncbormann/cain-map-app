@@ -1,49 +1,32 @@
 <script lang="ts">
   import { MapLibre, CircleLayer, GeoJSON, Popup} from 'svelte-maplibre';
-  import fullTextData from "$lib/data/lorum_ipsum.json";
+  import type { LngLatBoundsLike } from 'maplibre-gl';
+  let {zoom = $bindable(), filteredData, country = $bindable(), boundingBoxes} = $props()
 
 
-  let {zoom = $bindable(), filteredData} = $props()
+  // let bounds: LngLatBoundsLike = $state([-10.0, 24.5, 31.5, 61.5]);
 
+  const europeBBox: LngLatBoundsLike = [-10.0, 24.5, 31.5, 61.5];
 
+  // bounds is reactive and will update automatically based on country
+ let bounds: LngLatBoundsLike = $derived.by(() => {
+  if (!country) return europeBBox; // default to Europe
 
-  // let showModal = $state(false);
-  // let modalText = $state("");
-  // let modalDate = $state("")
+  if (!boundingBoxes) return europeBBox; // safeguard
 
+  const b = boundingBoxes.find(b => b.country_coded === country);
+  return b ? [b.min_lon, b.min_lat, b.max_lon, b.max_lat] : europeBBox;
+});
 
-  // function openFullText(index, date) {
-  //   const row = fullTextData.find(d => d.index == index);
-  //   modalText = row ? row.text : "No text available.";
-  //   modalDate = date;
-  //   showModal = true;
-  // }
-
-  // function closeModal() {
-  //   showModal = false;
-  // }
-
-
-
+  
 </script>
 
-<!-- {#if showModal}
-  <div class="modal-backdrop" onclick={closeModal}></div>
-    <div class="modal">
-      <button class="close-btn" onclick={closeModal}>×</button>
-        <div class="modal-content">
-          <h3>{modalDate}</h3>
-          <p>{modalText}</p>
-        </div>
-  </div>
-{/if} -->
+<!-- center={[14,52]} -->
 
-<!-- style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json" -->
 <MapLibre  
-
   style = "https://api.maptiler.com/maps/019ba32c-43d2-74ac-bdba-1768cc85c5c2/style.json?key=GDx9s6OzDP05pKKgG4wT"
-  center={[14,52]}
-  bind:zoom={zoom} 
+  bind:zoom={zoom}
+  bind:bounds={bounds}
 >
   <GeoJSON 
       id="europeMap" 

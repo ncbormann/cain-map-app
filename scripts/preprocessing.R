@@ -42,7 +42,25 @@ all_events_filtered <- europe %>%
 nrow(europe)
 nrow(all_events_filtered)
 
+
+country_bounds <- all_events_filtered %>%
+  group_by(country_coded) %>%
+  summarise(
+    min_lon = min(lon_new),
+    max_lon = max(lon_new),
+    min_lat = min(lat_new),
+    max_lat = max(lat_new),
+    center_lon = (min_lon + max_lon) / 2,
+    center_lat = (min_lat + max_lat) / 2
+  ) %>%
+  ungroup()
+
+# Save as JSON
+jsonlite::write_json(country_bounds, "../src/lib/data/country_bounds.json", pretty = TRUE)
+
+
 europe_geojson <- df_geojson(df = all_events_filtered, lon = "lon_new" , lat = "lat_new")
+country_bounds_json 
 
 # Set working directory to file location to write directly to app data 
 write_file(europe_geojson, "../src/lib/data/all_events_no_nulls.json")
