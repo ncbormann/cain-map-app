@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { MapLibre, CircleLayer, GeoJSON, Popup} from 'svelte-maplibre';
+  import { MapLibre, CircleLayer, LineLayer, GeoJSON, Popup} from 'svelte-maplibre';
   import type { LngLatBoundsLike } from 'maplibre-gl';
-  let {zoom = $bindable(), filteredData, country = $bindable(), boundingBoxes} = $props()
+  
+  let {zoom = $bindable(), filteredData, borders, country = $bindable(), boundingBoxes} = $props()
 
 
   // let bounds: LngLatBoundsLike = $state([-10.0, 24.5, 31.5, 61.5]);
@@ -21,13 +22,30 @@
   
 </script>
 
-<!-- center={[14,52]} -->
+
 
 <MapLibre  
   style = "https://api.maptiler.com/maps/019ba32c-43d2-74ac-bdba-1768cc85c5c2/style.json?key=GDx9s6OzDP05pKKgG4wT"
   bind:zoom={zoom}
   bind:bounds={bounds}
 >
+
+<!-- Historical borders (1925) -->
+    <GeoJSON
+      id="borders-1925"
+      data={borders}
+    >
+      <LineLayer
+        id="borders-1925-line"
+        paint={{
+          'line-color': '#333',
+          'line-width': 1,
+          'line-opacity': 0.6
+        }}
+      />
+    </GeoJSON>
+
+  
   <GeoJSON 
       id="europeMap" 
       data={filteredData}

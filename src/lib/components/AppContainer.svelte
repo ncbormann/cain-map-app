@@ -1,6 +1,7 @@
 <script>
     import MapCircles from '$lib/components/map/Maplibre_circles.svelte' 
     import geoEurope from '$lib/data/all_events_no_nulls?raw'
+    import borders1925 from '$lib/data/borders_1925.geojson?raw';
     import countryBounds from '$lib/data/country_bounds?raw'
     import BarChart from '$lib/components/barChart.svelte' 
     import ActorSelector from '$lib/components/filterSelect.svelte' 
@@ -8,6 +9,7 @@
     import ActiveFilters from '$lib/components/ActiveFilters.svelte' 
     import Search from '$lib/components/search.svelte' 
     const europeGeoJson = JSON.parse(geoEurope)
+    const borders = JSON.parse(borders1925)
     const boundingBoxes = JSON.parse(countryBounds)
 
     let mapZoom = $state(3)
@@ -137,6 +139,7 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
     
     <MapCircles bind:zoom={mapZoom} 
     filteredData={filteredData}
+    borders={borders}
     bind:country = {country}
     boundingBoxes = {boundingBoxes}/> 
 </div>
