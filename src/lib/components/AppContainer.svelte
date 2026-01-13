@@ -124,14 +124,7 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
                     bind:subActors={subActors} />
         </div>
 
-        {#if country}
-            <label class="country-toggle">
-                <input type="checkbox" 
-                bind:checked={countryTimelineOnly}
-                onchange={() => { dates = []; }} />
-                Show timeline for {country} only
-            </label>
-        {/if}
+
 
 
     </div>
@@ -180,9 +173,9 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
         /* overflow: hidden;  */
     }
 
-    /* ------------------------------ */
+
     /*           TOOLBAR              */
-    /* ------------------------------ */
+
 
     .toolbar-wrapper {
         position: relative;   /* makes absolute children relative to this */
@@ -231,15 +224,5 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
         padding: 0.5rem 1rem;
     }
 
-    .country-toggle {
-    display: flex;
-    align-items: center;
-    font-size: 0.85rem;
-    gap: 0.4rem;
-    margin-left: 1rem;
-    z-index: 50;
-    }
-    .country-toggle input[type="checkbox"] {
-        cursor: pointer;
-    }
+
 </style>

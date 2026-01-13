@@ -1,5 +1,5 @@
 <script lang="ts">
-  let { country = $bindable(), uniqueCountries,} = $props();
+  let { country = $bindable(), uniqueCountries} = $props();
   let open = $state(false);
 
   function selectCountry(c: string) {
@@ -33,6 +33,8 @@
 
 
 <style>
+
+
 .dropdown-menu {
   position: absolute;
   top: 105%;         
@@ -46,6 +48,18 @@
 
   min-width: 200px;
   z-index: 200;
+}
+
+.dropdown-button {
+  padding: 0.5rem 0.75rem;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 400;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 

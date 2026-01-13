@@ -39,6 +39,33 @@
 </div>
 
 <style>
+
+  :root {
+  --dropdown-bg: white;
+  --dropdown-border: #ddd;
+  --dropdown-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  --dropdown-radius: 8px;
+  --dropdown-padding: 0.5rem;
+  
+  --button-bg: white;
+  --button-border: #ccc;
+  --button-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  --button-radius: 6px;
+  --button-hover-bg: #f7f7f7;
+  
+  --font-family: 'Roboto Condensed', sans-serif;
+  --font-size-sm: 0.85rem;
+  --font-size-md: 0.9rem;
+  --font-weight-normal: 400;
+  --font-weight-bold: 500;
+  
+  --item-hover-bg: #fdae2a;
+  --item-padding: 0.4rem 0.6rem;
+  --item-radius: 6px;
+  --item-gap: 0.25rem;
+  
+  --z-index-dropdown: 200;
+}
   .dropdown {
     position: relative;
     display: inline-block;

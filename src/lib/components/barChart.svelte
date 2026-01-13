@@ -1,21 +1,32 @@
 <script>
     import * as d3 from 'd3'
-    let {filteredData, dates = $bindable(), countryTimelineOnly = $bindable(), country} = $props()
+    import { onMount } from 'svelte';
+
+    let isMobile = $state(false);
+
+    onMount(() => {
+        const media = window.matchMedia('(max-width: 640px)');
+
+        const update = () => {
+        isMobile = media.matches;
+        };
+
+        update(); // set initial value
+        media.addEventListener('change', update);
+
+        return () => media.removeEventListener('change', update);
+    });
+
+
+
+    let {filteredData, 
+        dates = $bindable(), 
+        countryTimelineOnly = $bindable(), 
+        country = $bindable()} = $props()
+
     let consistentData = filteredData
 
-    // let backgroundChart = $derived(
-    //     Array.from(
-    //         d3.rollup(
-    //         consistentData.features,
-    //         v => v.length,
-    //         d => +d3.timeMonth.floor(new Date(d.properties.date))
-    //         ),
-    //         ([timestamp, count]) => ({
-    //         month: new Date(timestamp),
-    //         count
-    //         })
-    //     ).sort((a, b) => a.month - b.month)
-    //     );
+
 
     let timelineFeatures = $derived.by(() => {
     // Toggle OFF → always show whole-Europe timeline
@@ -60,10 +71,10 @@
     
 
     let width = 928;
-    let height = 100;
+    let height = $derived(isMobile ? 220 : 100);
     let marginTop = 20;
     let marginRight = 0;
-    let marginBottom = 5;
+    let marginBottom = $derived(isMobile ? 30 : 10);
     let marginLeft = 40;
     let brush;
     let brushLayer;
@@ -74,10 +85,11 @@
     let hadDates = $state(false);
     let tooltipText = $state('');
     let tooltipX = $state(0);
-    let tooltipY = $state(marginTop - 5); 
+    let tooltipY = $derived(isMobile ? marginTop + 36 : marginTop - 5);
 
-    const innerWidth = width - marginLeft - marginRight;
-    const innerHeight = height - marginTop - marginBottom;
+
+    let innerHeight = $derived(height - marginTop - marginBottom);
+    let innerWidth = width - marginLeft - marginRight;
 
     let bar_height = $derived(
         d3.max(backgroundChart, d => d.count) ?? 0
@@ -115,14 +127,13 @@
         if (!axisLayer) return;
 
         const xAxis = d3.axisBottom(xScale)
-            .ticks(d3.timeYear.every(1))   // yearly ticks
+            .ticks(isMobile ? d3.timeYear.every(2) : d3.timeYear.every(1))   // yearly ticks, biannual on mobile
             .tickFormat(d3.timeFormat("%Y")); // only show year
 
 
         const g = d3.select(axisLayer);
         g.call(xAxis);
         g.selectAll("text")
-            .style("font-size", "10px");
     });
 
     $effect(() => {
@@ -180,9 +191,32 @@
 
 </script>
 
-
-
 <div id = "barplot">
+
+    <!-- {#if country}
+        <label class="country-toggle">
+            <input type="checkbox" 
+            bind:checked={countryTimelineOnly}
+            onchange={() => { dates = []; }} />
+            Show timeline for {country} only
+        </label>
+    {/if} -->
+
+    {#if country}
+    <label class="country-toggle">
+        <span class="toggle-label left">Europe</span>
+        <div class="toggle-switch" class:active={countryTimelineOnly}>
+        <input 
+            type="checkbox" 
+            bind:checked={countryTimelineOnly}
+            onchange={() => { dates = []; }}
+        />
+        <span class="slider"></span>
+        </div>
+        <span class="toggle-label right">{country}</span>
+    </label>
+    {/if}
+
     <svg id = "barplot-svg"
         {width}
         {height}
@@ -240,5 +274,97 @@
         font-family: 'Roboto Condensed', sans-serif;
         font-weight: bold;
     }
+
+    :global(.x-axis text) {
+        font-size: 14px;
+    }
+
+    @media (max-width: 640px) {
+        :global(.x-axis text) {
+            font-size: 30px;
+        }
+
+        .brush-tooltip {
+            font-size: 28px;
+        }
+
+
+        }
+
+
+        
+    .country-toggle {
+        display: flex;
+        align-items: center;
+        font-size: 0.85rem;
+        gap: 0.5rem;
+        margin-left: 1rem;
+        z-index: 50;
+        font-family: 'Roboto Condensed', sans-serif;
+        cursor: pointer;
+        user-select: none;
+    }
+    
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 48px;
+        height: 24px;
+    }
+    
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+    }
+    
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .3s;
+        border-radius: 24px;
+    }
+    
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .3s;
+        border-radius: 50%;
+    }
+    
+    .toggle-switch.active .slider {
+        background-color: #fec604;
+    }
+    
+    .toggle-switch.active .slider:before {
+        transform: translateX(24px);
+    }
+    
+    .toggle-label {
+        font-weight: 400;
+        color: #333;
+    }
+    
+    .toggle-label.left {
+        margin-right: 0.25rem;
+    }
+    
+    .toggle-label.right {
+        margin-left: 0.25rem;
+    }
+
+    
+    
 
 </style>

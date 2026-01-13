@@ -32,42 +32,42 @@
 </script>
 
 {#if actors.length || subActors.length || dates.length || country}
-<div class="filters">
+    <div class="filters">
 
-    <!-- Country -->
-    {#if country}
-        <span class="chip">
-            {country}
-            <button onclick={removeCountry}>✕</button>
-        </span>
-    {/if}
+        <!-- Country -->
+        {#if country}
+            <span class="chip">
+                {country}
+                <button onclick={removeCountry}>✕</button>
+            </span>
+        {/if}
 
-    <!-- Actor groups -->
-    {#each actors as a}
-        <span class="chip">
-            {a}
-            <button onclick={() => removeActor(a)}>✕</button>
-        </span>
-    {/each}
+        <!-- Actor groups from dropdown-->
+        {#each actors as a}
+            <span class="chip">
+                {a}
+                <button onclick={() => removeActor(a)}>✕</button>
+            </span>
+        {/each}
 
-    <!-- Subactors from Search -->
-    {#each subActors as sa}
-        <span class="chip">
-            {sa.name} ({sa.country})
-            <button onclick={() => removeSubActor(sa)}>✕</button>
-        </span>
-    {/each}
+        <!-- Subactors from Search -->
+        {#each subActors as sa}
+            <span class="chip">
+                {sa.name} ({sa.country})
+                <button onclick={() => removeSubActor(sa)}>✕</button>
+            </span>
+        {/each}
 
-    <!-- Dates from timeline-->
-    {#if dates.length === 2}
-        <span class="chip">
-            {monthYear.format(dates[0])} – {monthYear.format(dates[1])}
-            <button onclick={() => dates = []}>✕</button>
-        </span>
-    {/if}
+        <!-- Dates from timeline-->
+        {#if dates.length === 2}
+            <span class="chip">
+                {monthYear.format(dates[0])} – {monthYear.format(dates[1])}
+                <button onclick={() => dates = []}>✕</button>
+            </span>
+        {/if}
 
 
-</div>
+    </div>
 {/if}
 
 
@@ -77,12 +77,12 @@
         position: absolute;
         top: calc(1rem + 4.5rem);
         left: 50%;
-        transform: translateX(-50%); /* center parent if you want toolbar and filters centered */
+        transform: translateX(-50%);
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
         z-index: 20;
-        width: 420px; /* same as toolbar max-width */
+        width: 420px;
     }
 
     .chip {
