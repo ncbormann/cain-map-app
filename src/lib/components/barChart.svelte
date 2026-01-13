@@ -3,8 +3,6 @@
     let {filteredData, dates = $bindable(), countryTimelineOnly = $bindable(), country} = $props()
     let consistentData = filteredData
 
-
-
     // let backgroundChart = $derived(
     //     Array.from(
     //         d3.rollup(
@@ -47,25 +45,19 @@
     });
 
 
-
-
-
     let chartData = $derived(
-    Array.from(
-        d3.rollup(
-            filteredData.features,
-            v => v.length,
-            d => +d3.timeMonth.floor(new Date(d.properties.date)) 
-        ), ([timestamp, count]) => ({
-        month: new Date(timestamp), 
-        count: count
-    })).sort((a, b) => a.month - b.month) 
+        Array.from(
+            d3.rollup(
+                filteredData.features,
+                v => v.length,
+                d => +d3.timeMonth.floor(new Date(d.properties.date)) 
+            ), ([timestamp, count]) => ({
+            month: new Date(timestamp), 
+            count: count
+        })).sort((a, b) => a.month - b.month) 
     );
 
-    let month_count = $derived(backgroundChart.length);
-    let bar_height = $derived(
-        d3.max(backgroundChart, d => d.count) ?? 0
-    );
+    
 
     let width = 928;
     let height = 100;
@@ -80,9 +72,6 @@
     let selectedEnd = $state(null);
     let axisLayer;
     let hadDates = $state(false);
-    
-
-
     let tooltipText = $state('');
     let tooltipX = $state(0);
     let tooltipY = $state(marginTop - 5); 
@@ -90,6 +79,9 @@
     const innerWidth = width - marginLeft - marginRight;
     const innerHeight = height - marginTop - marginBottom;
 
+    let bar_height = $derived(
+        d3.max(backgroundChart, d => d.count) ?? 0
+    );
 
     let xScale = $derived.by(() =>
         d3.scaleTime()
@@ -108,6 +100,16 @@
             .range([0, innerHeight])
     );
 
+
+    let month_count = $derived.by(() => {
+        const domain = xScale.domain();
+        if (!domain[0] || !domain[1]) return 1;
+
+        return d3.timeMonth.count(
+            d3.timeMonth.floor(domain[0]),
+            d3.timeMonth.ceil(domain[1])
+        );
+        });
 
     $effect(() => {
         if (!axisLayer) return;
@@ -189,7 +191,7 @@
     <g fill = "grey">
         {#each backgroundChart as event}
             <rect
-                x = {xScale(event.month)}
+                x = {xScale(event.month) + (width/month_count * 0.5)/2}
                 y = {innerHeight - yScale(event.count)}
                 class = "background-bar"
                 width = {width/month_count * 0.5}
@@ -200,7 +202,7 @@
     <g fill = "#fec604">
         {#each chartData as event}
             <rect
-                x={xScale(event.month)}
+                x = {xScale(event.month) + (width/month_count * 0.5)/2}
                 y = {innerHeight - yScale(event.count)}
                 class="selectable-bar"
                 width = {width/month_count * 0.5}

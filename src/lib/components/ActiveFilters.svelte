@@ -1,12 +1,11 @@
 <script lang="ts">
     import * as d3 from 'd3'
+
     let {actors = $bindable(),
         subActors = $bindable(),
         dates = $bindable(),
         country = $bindable(),
-        countryTimelineOnly = $bindable(),
-        // selectedCountries = $bindable(),
-        uniqueCountries} = $props() 
+        countryTimelineOnly = $bindable()} = $props() 
 
 
     function removeActor(a) {
@@ -22,23 +21,14 @@
     function removeCountry() {
     country = null;
     countryTimelineOnly = null;
-    // selectedCountries = [...uniqueCountries];
-  }
+    }
 
     const monthYear = new Intl.DateTimeFormat('en', {
         month: 'short',
         year: 'numeric'
-        });
-
-    
+    });
 
 
-
-
-    // function clearAll() {
-    //     actors = [];
-    //     subActors = [];
-    // }
 </script>
 
 {#if actors.length || subActors.length || dates.length || country}

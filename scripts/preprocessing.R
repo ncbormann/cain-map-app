@@ -43,17 +43,42 @@ nrow(europe)
 nrow(all_events_filtered)
 
 
+# country_bounds <- all_events_filtered %>%
+#   group_by(country_coded) %>%
+#   summarise(
+#     min_lon = min(lon_new),
+#     max_lon = max(lon_new),
+#     min_lat = min(lat_new),
+#     max_lat = max(lat_new),
+#     center_lon = (min_lon + max_lon) / 2,
+#     center_lat = (min_lat + max_lat) / 2
+#   ) %>%
+#   ungroup()
+
 country_bounds <- all_events_filtered %>%
   group_by(country_coded) %>%
-  summarise(
-    min_lon = min(lon_new),
-    max_lon = max(lon_new),
-    min_lat = min(lat_new),
-    max_lat = max(lat_new),
+  reframe(
+    # Sort longitudes, remove min/max, take new min/max
+    sorted_lons = sort(lon_new),
+    min_lon = ifelse(length(sorted_lons) > 2, sorted_lons[2], sorted_lons[1]),
+    max_lon = ifelse(length(sorted_lons) > 2, 
+                     sorted_lons[length(sorted_lons) - 1], 
+                     sorted_lons[length(sorted_lons)]),
+    
+    # Sort latitudes, remove min/max, take new min/max
+    sorted_lats = sort(lat_new),
+    min_lat = ifelse(length(sorted_lats) > 2, sorted_lats[2], sorted_lats[1]),
+    max_lat = ifelse(length(sorted_lats) > 2,
+                     sorted_lats[length(sorted_lats) - 1],
+                     sorted_lats[length(sorted_lats)]),
+    
+    # Calculate centers using the new bounds
     center_lon = (min_lon + max_lon) / 2,
     center_lat = (min_lat + max_lat) / 2
   ) %>%
-  ungroup()
+  ungroup() %>%
+  # Remove the temporary sorted columns
+  select(-sorted_lons, -sorted_lats)
 
 # Save as JSON
 jsonlite::write_json(country_bounds, "../src/lib/data/country_bounds.json", pretty = TRUE)
