@@ -31,7 +31,7 @@
 >
 
 <!-- Historical borders (1925) -->
-    <GeoJSON
+    <!-- <GeoJSON
       id="borders-1925"
       data={borders}
     >
@@ -43,7 +43,37 @@
           'line-opacity': 0.6
         }}
       />
-    </GeoJSON>
+    </GeoJSON> -->
+
+      <!-- Historical borders (1925) -->
+  <!-- Historical borders (1925) -->
+<GeoJSON
+  id="borders-1925"
+  data={borders}
+>
+  <LineLayer
+    id="borders-1925-line"
+    paint={{
+      'line-color': '#d87355',
+      'line-width': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        0, 0.7,
+        5, 1.2,
+        10, 2
+      ],
+      'line-opacity': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        0, 0.1,
+        5, 0.2,
+        10, 0.3
+      ]
+    }}
+  />
+</GeoJSON>
 
   
   <GeoJSON 

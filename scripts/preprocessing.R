@@ -1,8 +1,8 @@
-pacman::p_load(tidyverse, geojsonsf, stringr, lubridate)
+pacman::p_load(tidyverse, geojsonsf, stringr, lubridate, sf)
 setwd(dirname(getwd())) 
 
 
-europe <- read_csv("server_clean_241007.csv") %>%
+europe <- read_csv("../src/lib/data/server_clean_241007.csv") %>%
   mutate(date_str = paste0(day_start,str_extract(month, "[a-zA-Z]+"),year),
          date = dmy(date_str)) 
 
@@ -14,7 +14,7 @@ nrow(europe %>% filter(is.na(date_str)))
 nrow(europe %>% filter(is.na(month)))
 date_test <- europe %>% filter(is.na(month))
 
-actors_clean <- read_csv("all_actors_simpliefied_website_2521204.csv")
+actors_clean <- read_csv("../src/lib/data/all_actors_simpliefied_website_2521204.csv")
 
 
 radius <- 0.0005
@@ -90,5 +90,73 @@ country_bounds_json
 # Set working directory to file location to write directly to app data 
 write_file(europe_geojson, "../src/lib/data/all_events_no_nulls.json")
 
+
+europe_1925_countries <- c(
+  "United Kingdom",
+  "Ireland",
+  "Netherlands",
+  "Belgium",
+  "Luxembourg",
+  "France",
+  "Switzerland",
+  "Spain",
+  "Portugal",
+  "Germany (Prussia)",
+  "Poland",
+  "Danzig",
+  "Austria",
+  "Hungary",
+  "Czechoslovakia",
+  "Italy/Sardinia",
+  "Albania",
+  "Serbia",
+  "Montenegro",
+  "Yugoslavia",
+  "Greece",
+  "Bulgaria",
+  "Rumania",
+  # "Russia (Soviet Union)",
+  "Estonia",
+  "Latvia",
+  "Lithuania",
+  "Finland",
+  "Sweden",
+  "Norway",
+  "Denmark",
+  "Malta",
+  "Cyprus",
+  "Iceland"
+)
+
+country_borders <- read_csv("../src/lib/data/CShapes-2.0.csv") %>%
+  mutate(name = cntry_name) %>%
+  filter(name %in% europe_1925_countries)
+
+
+  
+  
+  # mutate(name = case_when(cntry_name == "Germany (Prussia)" ~ "Germany",
+  #                         cntry_name == "Italy/Sardinia" ~ "Italy",
+  #                         TRUE ~ cntry_name))
+
+countries <- unique(all_events_filtered$country_coded)
+
+latest_borders <- country_borders %>%
+  filter(gwsyear < 1926) %>%
+  group_by(name) %>%
+  reframe(max = max(gwsyear))
+
+nineteentwentyfive <- country_borders %>%
+  inner_join(latest_borders) %>%
+  filter(gwsyear == max) %>%
+  mutate(
+    the_geom = st_as_sfc(the_geom),  # Convert MULTIPOLYGON WKT to geometry
+    cap_geom = st_as_sfc(cap_geom)   # Convert POINT WKT to geometry
+  ) %>%
+  st_set_geometry("the_geom")  # Set the_geom as the main geometry column
+
+plot(nineteentwentyfive$the_geom)
+
+st_write(nineteentwentyfive, "../src/lib/data/all_borders_1925.geojson", driver = "GeoJSON")
 
 

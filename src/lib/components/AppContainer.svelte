@@ -1,7 +1,7 @@
 <script>
     import MapCircles from '$lib/components/map/Maplibre_circles.svelte' 
     import geoEurope from '$lib/data/all_events_no_nulls?raw'
-    import borders1925 from '$lib/data/borders_1925.geojson?raw';
+    import borders1925 from '$lib/data/all_borders_1925.geojson?raw';
     import countryBounds from '$lib/data/country_bounds?raw'
     import BarChart from '$lib/components/barChart.svelte' 
     import ActorSelector from '$lib/components/filterSelect.svelte' 
@@ -209,6 +209,7 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
         box-shadow: 0 3px 12px rgba(0,0,0,0.18);
     }
 
+    
 
     #timeline {
         position: absolute;

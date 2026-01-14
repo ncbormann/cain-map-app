@@ -1,7 +1,7 @@
 <script>
     import * as d3 from 'd3'
     import { onMount } from 'svelte';
-    import borders1925 from '$lib/data/borders_1925.geojson';
+    
 
 
     let isMobile = $state(false);
