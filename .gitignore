@@ -8,6 +8,9 @@
 /.svelte-kit
 /build
 
+# Data
+/src/lib/data/*.json
+
 # OS
 .DS_Store
 Thumbs.db

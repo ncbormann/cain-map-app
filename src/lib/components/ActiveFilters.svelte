@@ -1,8 +1,11 @@
 <script lang="ts">
     import * as d3 from 'd3'
+
     let {actors = $bindable(),
         subActors = $bindable(),
-        dates = $bindable()} = $props() 
+        dates = $bindable(),
+        country = $bindable(),
+        countryTimelineOnly = $bindable()} = $props() 
 
 
     function removeActor(a) {
@@ -15,48 +18,56 @@
         );
     }
 
+    function removeCountry() {
+    country = null;
+    countryTimelineOnly = null;
+    }
+
     const monthYear = new Intl.DateTimeFormat('en', {
         month: 'short',
         year: 'numeric'
-        });
+    });
 
 
-
-
-    // function clearAll() {
-    //     actors = [];
-    //     subActors = [];
-    // }
 </script>
 
-{#if actors.length || subActors.length || dates.length}
-<div class="filters">
-    <!-- Actor groups -->
-    {#each actors as a}
-        <span class="chip">
-            {a}
-            <button onclick={() => removeActor(a)}>✕</button>
-        </span>
-    {/each}
+{#if actors.length || subActors.length || dates.length || country}
+    <div class="filters">
 
-    <!-- Subactors from Search -->
-    {#each subActors as sa}
-        <span class="chip">
-            {sa.name} ({sa.country})
-            <button onclick={() => removeSubActor(sa)}>✕</button>
-        </span>
-    {/each}
+        <!-- Country -->
+        {#if country}
+            <span class="chip">
+                {country}
+                <button onclick={removeCountry}>✕</button>
+            </span>
+        {/if}
 
-    <!-- Dates from timeline-->
-    {#if dates.length === 2}
-  <span class="chip">
-    {monthYear.format(dates[0])} – {monthYear.format(dates[1])}
-    <button onclick={() => dates = []}>✕</button>
-  </span>
-{/if}
+        <!-- Actor groups from dropdown-->
+        {#each actors as a}
+            <span class="chip">
+                {a}
+                <button onclick={() => removeActor(a)}>✕</button>
+            </span>
+        {/each}
+
+        <!-- Subactors from Search -->
+        {#each subActors as sa}
+            <span class="chip">
+                {sa.name} ({sa.country})
+                <button onclick={() => removeSubActor(sa)}>✕</button>
+            </span>
+        {/each}
+
+        <!-- Dates from timeline-->
+        {#if dates.length === 2}
+            <span class="chip">
+                {monthYear.format(dates[0])} – {monthYear.format(dates[1])}
+                <button onclick={() => dates = []}>✕</button>
+            </span>
+        {/if}
 
 
-</div>
+    </div>
 {/if}
 
 
@@ -66,12 +77,12 @@
         position: absolute;
         top: calc(1rem + 4.5rem);
         left: 50%;
-        transform: translateX(-50%); /* center parent if you want toolbar and filters centered */
+        transform: translateX(-50%);
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
         z-index: 20;
-        width: 420px; /* same as toolbar max-width */
+        width: 420px;
     }
 
     .chip {

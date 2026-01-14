@@ -1,46 +1,85 @@
 <script>
     import MapCircles from '$lib/components/map/Maplibre_circles.svelte' 
     import geoEurope from '$lib/data/all_events_no_nulls?raw'
+    import borders1925 from '$lib/data/all_borders_1925.geojson?raw';
+    import countryBounds from '$lib/data/country_bounds?raw'
     import BarChart from '$lib/components/barChart.svelte' 
     import ActorSelector from '$lib/components/filterSelect.svelte' 
+    import CountrySelector from '$lib/components/countrySelect.svelte' 
     import ActiveFilters from '$lib/components/ActiveFilters.svelte' 
     import Search from '$lib/components/search.svelte' 
     const europeGeoJson = JSON.parse(geoEurope)
+    const borders = JSON.parse(borders1925)
+    const boundingBoxes = JSON.parse(countryBounds)
+
     let mapZoom = $state(3)
     let toggle = $state(true)
     let actors = $state([])
     let subActors = $state([]) 
     let dates = $state([])
     let country = $state(null)
+    let countryTimelineOnly = $state(false);
 
 
-
-    const uniqueActors = [...new Set(
-        europeGeoJson.features.map(f => f.properties.actor_group_a_reduced)
+    const uniqueCountries= [...new Set(
+        europeGeoJson.features.map(f => f.properties.country_coded)
     )];
 
-    // const uniqueSubActors = [...new Set(
-    //     europeGeoJson.features.flatMap(f => [f.properties.actor_a,
-    //         f.properties.actor_b])
-    // )];
 
-    
+
+    const uniqueActors = [
+    ...new Map(
+        europeGeoJson.features.flatMap(f => [
+            { group: f.properties.actor_group_a_reduced, country: f.properties.country_coded },
+            { group: f.properties.actor_group_b_reduced, country: f.properties.country_coded }
+        ])
+        .filter(x => x.group && x.country)                  // remove empty entries
+        .map(x => [`${x.group}::${x.country}`, x])         // map for uniqueness
+    ).values()
+    ];
+
+
+    let availableGroups = $derived.by(() => {
+        return [
+            ...new Set(
+                uniqueActors
+                    .filter(a => !country || a.country === country) 
+                    .map(a => a.group)
+            )
+        ];
+    });
+
+
     const uniqueSubActors = [
         ...new Map(
             europeGeoJson.features.flatMap(f => [
-                { name: f.properties.actor_a, country: f.properties.country_coded },
-                { name: f.properties.actor_b, country: f.properties.country_coded }
+                { name: f.properties.actor_a, country: f.properties.country_coded, group: f.properties.actor_group_a_reduced },
+                { name: f.properties.actor_b, country: f.properties.country_coded, group: f.properties.actor_group_b_reduced },
             ])
-            .filter(x => x.name && x.country)
-            .map(x => [`${x.name}::${x.country}`, x]) 
+            .filter(x => x.name && x.country && x.group)
+            .map(x => [`${x.name}::${x.country}`, x])
         ).values()
     ];
 
 
+    const availableSubActors = $derived.by(() => {
+        return uniqueSubActors.filter(sa => {
+            const countryOk = !country || sa.country === country;
+            const groupOk   = actors.length === 0 || actors.includes(sa.group);
+            return countryOk && groupOk;
+        });
+    });
 
 
     function filterFeatures() {
     return europeGeoJson.features.filter(f => {
+
+        // 5) COUNTRY FILTER
+        const countryMatch =
+            country
+        ? f.properties.country_coded === country
+        : true;
+
 
         // 1) SPECIFIC ACTOR–COUNTRY FILTER (takes priority)
         const specificActorMatch =
@@ -69,11 +108,9 @@
                   new Date(f.properties.date) <= dates[1]
                 : true;
 
-        return actorMatch && dateMatch;
+        return actorMatch && dateMatch && countryMatch;
     });
 }
-
-
 
 let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 
@@ -83,24 +120,33 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 <div class="container">
     <div class="toolbar-wrapper">
         <div id="toolbar">
-            <ActorSelector uniqueActors={uniqueActors} bind:actors={actors}/>
-            <Search uniqueSubActors={uniqueSubActors}
+            <CountrySelector uniqueCountries={uniqueCountries} bind:country={country}/>
+            <ActorSelector availableGroups={availableGroups} bind:actors={actors}/>
+            <Search uniqueSubActors={availableSubActors}
                     bind:subActors={subActors} />
         </div>
+
+
+
 
     </div>
     <ActiveFilters  bind:actors={actors} 
     bind:subActors={subActors} 
     bind:dates={dates}
-    bind:country={country}/>
+    bind:country={country}
+    uniqueCountries
+    bind:countryTimelineOnly={countryTimelineOnly}/>
     
     <MapCircles bind:zoom={mapZoom} 
-    filteredData={filteredData}/> 
+    filteredData={filteredData}
+    borders={borders}
+    bind:country = {country}
+    boundingBoxes = {boundingBoxes}/> 
 </div>
 
 
 <div id="timeline">
-    <BarChart filteredData={filteredData} bind:dates = {dates}/>
+    <BarChart filteredData={filteredData} bind:dates = {dates} countryTimelineOnly={countryTimelineOnly} country={country}/>
 
 </div>
 
@@ -130,9 +176,9 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
         /* overflow: hidden;  */
     }
 
-    /* ------------------------------ */
+
     /*           TOOLBAR              */
-    /* ------------------------------ */
+
 
     .toolbar-wrapper {
         position: relative;   /* makes absolute children relative to this */
@@ -163,6 +209,7 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
         box-shadow: 0 3px 12px rgba(0,0,0,0.18);
     }
 
+    
 
     #timeline {
         position: absolute;
@@ -180,4 +227,6 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 
         padding: 0.5rem 1rem;
     }
+
+
 </style>
