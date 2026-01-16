@@ -76,8 +76,8 @@
     let height = $derived(isMobile ? 220 : 100);
     let marginTop = 20;
     let marginRight = 0;
-    let marginBottom = $derived(isMobile ? 30 : 10);
-    let marginLeft = 40;
+    let marginBottom = $derived(isMobile ? 15 : 10);
+    let marginLeft = 0;
     let brush;
     let brushLayer;
     let prevDomain = null;
@@ -194,15 +194,6 @@
 </script>
 
 <div id = "barplot">
-
-    <!-- {#if country}
-        <label class="country-toggle">
-            <input type="checkbox" 
-            bind:checked={countryTimelineOnly}
-            onchange={() => { dates = []; }} />
-            Show timeline for {country} only
-        </label>
-    {/if} -->
 
     {#if country}
     <label class="country-toggle">

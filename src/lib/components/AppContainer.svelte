@@ -8,6 +8,7 @@
     import CountrySelector from '$lib/components/countrySelect.svelte' 
     import ActiveFilters from '$lib/components/ActiveFilters.svelte' 
     import Search from '$lib/components/search.svelte' 
+    import Info from '$lib/components/infoBox.svelte' 
     const europeGeoJson = JSON.parse(geoEurope)
     const borders = JSON.parse(borders1925)
     const boundingBoxes = JSON.parse(countryBounds)
@@ -116,7 +117,6 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 
 </script>
 
-
 <div class="container">
     <div class="toolbar-wrapper">
         <div id="toolbar">
@@ -125,17 +125,15 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
             <Search uniqueSubActors={availableSubActors}
                     bind:subActors={subActors} />
         </div>
-
-
-
-
+        <div id="filters-overlay">
+            <ActiveFilters  bind:actors={actors} 
+                bind:subActors={subActors} 
+                bind:dates={dates}
+                bind:country={country}
+                uniqueCountries
+                bind:countryTimelineOnly={countryTimelineOnly}/>
+        </div>
     </div>
-    <ActiveFilters  bind:actors={actors} 
-    bind:subActors={subActors} 
-    bind:dates={dates}
-    bind:country={country}
-    uniqueCountries
-    bind:countryTimelineOnly={countryTimelineOnly}/>
     
     <MapCircles bind:zoom={mapZoom} 
     filteredData={filteredData}
@@ -144,89 +142,170 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
     boundingBoxes = {boundingBoxes}/> 
 </div>
 
+<div class="timeline-shell">
+    <div class="info-button-wrapper">
+        <Info />
+    </div>
 
-<div id="timeline">
-    <BarChart filteredData={filteredData} bind:dates = {dates} countryTimelineOnly={countryTimelineOnly} country={country}/>
-
+    <div id="timeline">
+        <BarChart filteredData={filteredData} bind:dates = {dates} countryTimelineOnly={countryTimelineOnly} country={country}/>
+    </div>
 </div>
 
 
-  <style>
-    :global(html, body) {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        font-family: 'Roboto Condensed', sans-serif;
-    }
-
-    .container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        overflow: hidden; 
-    }
-
-    /* map fills the container  */
-    .container :global(.maplibre-map) {
-        position: absolute !important;
-        top: 0;
-        left: 0;
-        width: 100% !important;
-        height: 100% !important;
-        /* overflow: hidden;  */
-    }
-
-
-    /*           TOOLBAR              */
-
-
-    .toolbar-wrapper {
-        position: relative;   /* makes absolute children relative to this */
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start; /* stack toolbar and filters */
-        gap: 0.5rem;
-    }
-
-    #toolbar {
-        position: absolute;
-        top: 1rem;               
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 30;
-
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 1rem;
-
-        width: calc(100% - 2rem);  
-        max-width: 420px;
-
-        background: white;
-        border-radius: 10px;
-        padding: 0.75rem;
-        box-shadow: 0 3px 12px rgba(0,0,0,0.18);
-    }
 
     
 
-    #timeline {
-        position: absolute;
-        bottom: 0.75rem;    /* slight breathing room */
+
+  <style>
+        /* =========================
+    GLOBAL BASE
+    ========================= */
+
+    :global(html, body) {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+    }
+
+
+    /* =========================
+    MAIN CONTAINER & MAP
+    ========================= */
+
+    .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    }
+
+    .container :global(.maplibre-map) {
+    position: absolute !important;
+    inset: 0;               
+    width: 100% !important;
+    height: 100% !important;
+    }
+
+
+    /* =========================
+    TOOLBAR + FILTERS LAYER
+    ========================= */
+
+
+    .toolbar-wrapper {
+    position: relative;
+    z-index: 30;
+
+    /* Center horizontally */
+    left: 50%;
+    transform: translateX(-50%);
+    top: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    width: calc(100% - 2rem);
+    max-width: 420px;
+    }
+
+    /* Toolbar itself */
+
+    #toolbar {
+        display: flex;
+        flex-wrap: nowrap;  /* default: desktop/tablet single row */
+        align-items: center;
+        gap: 0.75rem;
+
+        background: white;
+        padding: 0.75rem;
+        border-radius: 10px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+
+        overflow: visible; 
+        }
+
+/* MOBILE WRAP */
+    @media (max-width: 640px) {
+    #toolbar {
+        flex-wrap: wrap;        /* overrides default */
+        justify-content: center;
+    }
+
+    #toolbar > :global(.dropdown) {
+        flex: 0 0 calc(50% - 0.375rem);
+    }
+
+    #toolbar > :global(.search-wrapper) {
+        flex: 0 0 100%;
+        margin-top: 0.5rem;
+    }
+
+    #filters-overlay {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        margin-top: 0.5rem;
+        width: 100%;
+    }
+    }
+
+
+    /* =========================
+    TIMELINE / BAR CHART
+    ========================= */
+
+    /* .timeline-shell {
+        position: relative;
+        bottom: 8rem;
         left: 50%;
         transform: translateX(-50%);
         z-index: 25;
 
         width: 90%;
-        max-width: 1000px; 
+        max-width: 1000px;
+    } */
 
-        background: white;
-        border-radius: 10px 10px 10px 10px; /* nice top-curve */
-        box-shadow: 0 -3px 12px rgba(0,0,0,0.2);
+    .timeline-shell {
+        position: relative;
+        bottom: 8rem;
+        z-index: 25;
 
-        padding: 0.5rem 1rem;
+        width: 90%;
+        max-width: 1000px;
+        margin: 0 auto;
     }
 
+    
+
+    #timeline {
+        position: relative;
+        z-index: 25;
+
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+
+        width: 90%;
+        max-width: 1000px;
+
+        background: white;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        box-shadow: 0 -3px 12px rgba(0,0,0,0.2);
+        }
+
+    /* =========================
+    INFO
+    ========================= */
+
+    .info-button-wrapper {
+    position: relative;
+    top: -2.5rem;
+    z-index: 50;
+}
 
 </style>

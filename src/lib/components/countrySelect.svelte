@@ -11,29 +11,35 @@
 
 <div class="dropdown">
   <button class="dropdown-button" onclick={() => (open = !open)}>
-    {country ?? 'Country'} ▾
+    <span class="button-label">{country ?? 'Country'}</span>
+    <span class="button-arrow">▾</span>
   </button>
 
-  {#if open}
-    <div class="dropdown-menu">
-      <div class="menu-list">
-        {#each uniqueCountries as c}
-          <button
-            class="menu-item"
-            onclick={() => selectCountry(c)}
-          >
-            {c}
-          </button>
-        {/each}
-      </div>
 
-    </div>
-  {/if}
+
+  {#if open}
+  <div class="dropdown-menu">
+    <fieldset class="menu-list">
+      {#each uniqueCountries as c}
+        <button
+          class="menu-item"
+          onclick={() => selectCountry(c)}
+        >
+          {c}
+        </button>
+      {/each}
+    </fieldset>
+  </div>
+{/if}
 </div>
+
 
 
 <style>
 
+.dropdown {
+    position: relative;
+  }
 
 .dropdown-menu {
   position: absolute;
@@ -50,18 +56,62 @@
   z-index: 200;
 }
 
-.dropdown-button {
+.menu-list {
+  display: block;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* .dropdown-button {
   padding: 0.5rem 0.75rem;
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: 400;
+  max-width: 140px;
+  min-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
   background: white;
   border: 1px solid #ccc;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+} */
 
+  .dropdown-button {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 400;
+    display: inline-flex;          /* flex layout inside button */
+    align-items: center;           /* vertically center */
+    justify-content: space-between;/* text left, arrow right */
+    padding: 0.5rem 0.75rem;
+    max-width: 200px;              /* allow longer names */
+    min-width: 90px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .button-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 1;                /* text can shrink */
+  }
+
+  .button-arrow {
+    flex-shrink: 0;                /* arrow never shrinks or wraps */
+    margin-left: 0.25rem;
+  }
 
 .menu-list {
   position: relative;

@@ -36,7 +36,7 @@
 
         <!-- Country -->
         {#if country}
-            <span class="chip">
+            <span class="chip" style="background-color: #fdae2a;">
                 {country}
                 <button onclick={removeCountry}>✕</button>
             </span>
@@ -73,16 +73,15 @@
 
 
 <style>
+    
+
     .filters {
-        position: absolute;
-        top: calc(1rem + 4.5rem);
-        left: 50%;
-        transform: translateX(-50%);
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
-        z-index: 20;
-        width: 420px;
+
+        padding: 0.5rem;
+        border-radius: 10px;
     }
 
     .chip {
@@ -93,6 +92,7 @@
         align-items: left;
         gap: 0.4rem;
         font-size: 0.85rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
     .chip button {
@@ -101,6 +101,8 @@
         cursor: pointer;
         font-size: 0.9rem;
     }
+
+
 
 
 </style>
