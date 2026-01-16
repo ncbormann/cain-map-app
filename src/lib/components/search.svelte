@@ -151,6 +151,12 @@
     .search-wrapper input {
         width: 100%;
         box-sizing: border-box;
+
+        font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 400;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1.2rem;
     }
 
     #suggestion-list li {

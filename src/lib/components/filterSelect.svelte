@@ -69,7 +69,7 @@
     border: 1px solid #ccc;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
 
