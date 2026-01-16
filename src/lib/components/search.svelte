@@ -88,17 +88,6 @@
   {#if showSuggestions}
     <ul id="suggestion-list">
       {#each listMatches as x, index}
-        <!-- <li 
-            class:selected={index === selectedIndex}
-            onclick={() => selectSuggestion(x)}>
-                {#each splitForHighlight(x, searchTerm) as part}
-                    {#if part.match}
-                        <span class="match">{part.text}</span>
-                    {:else}
-                        {part.text}
-                    {/if}
-                {/each}
-            </li> -->
             <li 
                 class={`flex justify-between items-center ${index === selectedIndex ? 'selected' : ''}`}
                 onclick={() => selectSuggestion(x)}
@@ -147,9 +136,16 @@
 
     .search-wrapper {
         position: relative;
-        z-index: 40;          
-        flex: 0 0 auto;      
-        }
+        z-index: 40;
+
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .search-wrapper input {
+        width: 100%;
+        box-sizing: border-box;
+    }
 
     #suggestion-list li {
         padding: 0.625rem 0.75rem;

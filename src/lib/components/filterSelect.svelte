@@ -44,8 +44,7 @@
  
   .dropdown {
     position: relative;
-    display: inline-block;
-    z-index: 50;
+    width: 100%;
   }
 
   .dropdown-button {
@@ -53,8 +52,7 @@
     align-items: center;           /* vertically center */
     justify-content: space-between;/* text left, arrow right */
     padding: 0.5rem 0.75rem;
-    max-width: 200px;              /* allow longer names */
-    min-width: 90px;
+    width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
