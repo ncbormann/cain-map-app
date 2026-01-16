@@ -13,9 +13,6 @@
   <button class="dropdown-button" onclick={() => {
     countryOpen = !countryOpen;
     filterOpen = false;
-    console.log(filterOpen)
-    console.log(countryOpen)
-    console.log(showSuggestions)
   }}>
     <span class="button-label">{country ?? 'Country'}</span>
     <span class="button-arrow">▾</span>

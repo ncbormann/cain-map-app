@@ -19,9 +19,6 @@
     filterOpen = !filterOpen;
     countryOpen = false;
     showSuggestions = false;
-    console.log(filterOpen)
-    console.log(countryOpen)
-    console.log(showSuggestions)
   }}>
     <span class="button-label">Actor Groups</span>
     <span class="button-arrow">▾</span>

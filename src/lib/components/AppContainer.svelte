@@ -224,8 +224,8 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
         flex-direction: column;
         gap: 0.5rem;
 
-        width: 100%;
-        max-width: 420px;
+        width: 90%;
+        max-width: 800px;
         }
 
     /* Toolbar itself */

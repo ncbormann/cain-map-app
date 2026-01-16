@@ -83,9 +83,6 @@
     onfocus={() => {showSuggestions = true;
             countryOpen = false;
             filterOpen = false;
-            console.log(filterOpen)
-            console.log(countryOpen)
-            console.log(showSuggestions)
     }}
     onblur={() => setTimeout(() => (showSuggestions = false), 150)} 
     class="w-full p-2 rounded border shadow bg-white"
@@ -138,7 +135,7 @@
 
         max-height: 200px;
         overflow-y: auto;
-        width: 500px;
+        width: 100%;
 
         z-index: 100;
     }
@@ -148,7 +145,7 @@
         z-index: 40;
 
         flex: 1 1 100%;
-        width: 100%;
+        /* width: 100%; */
     }
 
     .search-wrapper input {
