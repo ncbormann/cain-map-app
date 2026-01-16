@@ -8,7 +8,6 @@ europe <- read_csv("../src/lib/data/server_clean_241007.csv") %>%
 
 # when I run this, 1504 fail to parse - probably because I'm pulling from two different sets of date columns.
 
-
 nrow(europe %>% filter(is.na(date_start)))
 nrow(europe %>% filter(is.na(date_str)))
 nrow(europe %>% filter(is.na(month)))

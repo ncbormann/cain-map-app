@@ -30,50 +30,33 @@
   bind:bounds={bounds}
 >
 
-<!-- Historical borders (1925) -->
-    <!-- <GeoJSON
-      id="borders-1925"
-      data={borders}
-    >
-      <LineLayer
-        id="borders-1925-line"
-        paint={{
-          'line-color': '#333',
-          'line-width': 1,
-          'line-opacity': 0.6
-        }}
-      />
-    </GeoJSON> -->
-
-      <!-- Historical borders (1925) -->
-  <!-- Historical borders (1925) -->
-<GeoJSON
-  id="borders-1925"
-  data={borders}
->
-  <LineLayer
-    id="borders-1925-line"
-    paint={{
-      'line-color': '#d87355',
-      'line-width': [
-        'interpolate',
-        ['linear'],
-        ['zoom'],
-        0, 0.7,
-        5, 1.2,
-        10, 2
-      ],
-      'line-opacity': [
-        'interpolate',
-        ['linear'],
-        ['zoom'],
-        0, 0.1,
-        5, 0.2,
-        10, 0.3
-      ]
-    }}
-  />
-</GeoJSON>
+  <GeoJSON
+    id="borders-1925"
+    data={borders}
+  >
+    <LineLayer
+      id="borders-1925-line"
+      paint={{
+        'line-color': '#d87355',
+        'line-width': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          0, 0.7,
+          5, 1.2,
+          10, 2
+        ],
+        'line-opacity': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          0, 0.1,
+          5, 0.2,
+          10, 0.3
+        ]
+      }}
+    />
+  </GeoJSON>
 
   
   <GeoJSON 
@@ -152,7 +135,7 @@
 
 
             <div class="actors">
-              <p>Event involving</p>
+              <p>Event involving:</p>
               <div class="actor">{data.properties.actor_a}</div>
               <div class="actor">{data.properties.actor_b}</div>
             </div>
@@ -161,13 +144,7 @@
             {#if data.properties.deaths}
               <div class="deaths">Deaths: {data.properties.deaths}</div>
             {/if}
-            <!-- Button removed pending external sourcing of primary materials -->
-            <!-- <button 
-              class="fulltext-btn"
-              onclick={() => openFullText(data.properties.index, data.properties.date)}
-            >
-              Full report text
-            </button> -->
+
           </div> 
 
         {:else}
@@ -190,7 +167,7 @@
     padding: 10px 14px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    /* gap: 2px; */
     max-width: 230px;
   }
 
@@ -198,14 +175,14 @@
   .meta {
     display: flex;
     justify-content: space-between;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: #555;
     opacity: 0.8;
+    font-weight: 500;
   }
 
   /* Main actor names */
   .actors {
-    font-size: 0.75rem;
     display: flex;
     flex-direction: column;
     gap: 0px;
@@ -221,77 +198,9 @@
   .deaths {
     font-size: 0.85rem;
     color: #D87355; 
-    margin-top: 4px;
+    margin-top: 2px;
     font-weight: 500;
   }
 
-  /* Button for modal */
-  /* .fulltext-btn {
-    margin-top: 6px;
-    padding: 6px 10px;
-    font-size: 0.8rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    background: #FEC604;       
-    color: #383C42;
-    font-weight: 600;
-    transition: background 0.2s;
-  } */
-
-  /* .fulltext-btn:hover {
-    background: #e0b000;
-  } */
-
-  /* .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 2000;
-  } */
-
-  /* Modal box */
-  /* .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    width: min(600px, 90%);
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    z-index: 2001;
-  } */
-
-  /* Close button */
-  /* .close-btn {
-    position: absolute;
-    top: 8px;
-    right: 12px;
-    background: none;
-    border: none;
-    font-size: 1.6rem;
-    cursor: pointer;
-    line-height: 1;
-  } */
-
-  /* Text inside modal */
-  /* .modal-content {
-    max-height: 65vh;
-    overflow-y: auto;
-    padding-right: 8px;
-  }
-
-  .modal-content h3 {
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-size: 1.2rem;
-  }
-
-  .modal-content p {
-    white-space: pre-wrap;
-    line-height: 1.45;
-  } */
 
 </style>

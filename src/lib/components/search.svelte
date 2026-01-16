@@ -73,7 +73,7 @@
 
 </script>
 
-<div class="relative z-10 m-2">
+<div class="search-wrapper" style="flex: 1 1 auto; min-width: 0;">
   <input
     type="text"
     placeholder="Search actor..."
@@ -143,23 +143,29 @@
         overflow-y: auto;
 
         z-index: 100;
-}
+    }
 
-        #suggestion-list li {
-            padding: 0.625rem 0.75rem;
-            cursor: pointer;
-            font-size: 0.9rem;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;                 /* ensure text splits left + right */
-            justify-content: space-between;
-            align-items: center;
+    .search-wrapper {
+        position: relative;
+        z-index: 40;          
+        flex: 0 0 auto;      
         }
 
-        .country {
-            font-size: 0.8rem;
-            color: #9ca3af; /* tailwind gray-400 */
-            margin-left: 1rem;
-            white-space: nowrap;
+    #suggestion-list li {
+        padding: 0.625rem 0.75rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;                 /* ensure text splits left + right */
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .country {
+        font-size: 0.8rem;
+        color: #9ca3af; /* tailwind gray-400 */
+        margin-left: 1rem;
+        white-space: nowrap;
         }
 
         #suggestion-list li:last-child {
