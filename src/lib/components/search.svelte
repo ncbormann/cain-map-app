@@ -1,8 +1,10 @@
 <script lang="ts">
-    let {subActors = $bindable(), //this is the object we use for the filtering
+    let {subActors = $bindable(),
+        showSuggestions = $bindable(),
+        countryOpen = $bindable(),
+        filterOpen = $bindable(),
         uniqueSubActors} = $props() // this is the reference list
         let searchTerm = $state('');
-        let showSuggestions = $state(false);
         let selectedIndex = $state(-1);
 
 
@@ -78,7 +80,13 @@
     type="text"
     placeholder="Search actor..."
     bind:value={searchTerm}
-    onfocus={() => (showSuggestions = true)}
+    onfocus={() => {showSuggestions = true;
+            countryOpen = false;
+            filterOpen = false;
+            console.log(filterOpen)
+            console.log(countryOpen)
+            console.log(showSuggestions)
+    }}
     onblur={() => setTimeout(() => (showSuggestions = false), 150)} 
     class="w-full p-2 rounded border shadow bg-white"
     onkeydown={handleKeyDown}
@@ -130,6 +138,7 @@
 
         max-height: 200px;
         overflow-y: auto;
+        width: 500px;
 
         z-index: 100;
     }

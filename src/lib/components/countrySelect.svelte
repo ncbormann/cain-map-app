@@ -1,36 +1,42 @@
 <script lang="ts">
-  let { country = $bindable(), uniqueCountries} = $props();
-  let open = $state(false);
+  let { country = $bindable(), countryOpen = $bindable(), filterOpen = $bindable(), showSuggestions = $bindable(), uniqueCountries} = $props();
+  
 
   function selectCountry(c: string) {
     country = c;
-    open = false;
+    countryOpen = false;
   }
 
 </script>
 
 <div class="dropdown">
-  <button class="dropdown-button" onclick={() => (open = !open)}>
+  <button class="dropdown-button" onclick={() => {
+    countryOpen = !countryOpen;
+    filterOpen = false;
+    console.log(filterOpen)
+    console.log(countryOpen)
+    console.log(showSuggestions)
+  }}>
     <span class="button-label">{country ?? 'Country'}</span>
     <span class="button-arrow">▾</span>
   </button>
 
 
 
-  {#if open}
-  <div class="dropdown-menu">
-    <fieldset class="menu-list">
-      {#each uniqueCountries as c}
-        <button
-          class="menu-item"
-          onclick={() => selectCountry(c)}
-        >
-          {c}
-        </button>
-      {/each}
-    </fieldset>
-  </div>
-{/if}
+  {#if countryOpen}
+    <div class="dropdown-menu">
+      <fieldset class="menu-list">
+        {#each uniqueCountries as c}
+          <button
+            class="menu-item"
+            onclick={() => selectCountry(c)}
+          >
+            {c}
+          </button>
+        {/each}
+      </fieldset>
+    </div>
+  {/if}
 </div>
 
 

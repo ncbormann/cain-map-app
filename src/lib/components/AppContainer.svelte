@@ -21,6 +21,10 @@
     let country = $state(null)
     let countryTimelineOnly = $state(false);
 
+    let showSuggestions = $state(false);
+    let countryOpen = $state(false);
+    let filterOpen = $state(false);
+
 
     const uniqueCountries= [...new Set(
         europeGeoJson.features.map(f => f.properties.country_coded)
@@ -120,15 +124,22 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 <div class="container">
     <div class="toolbar-wrapper">
         <div id="toolbar">
-            <!-- <CountrySelector uniqueCountries={uniqueCountries} bind:country={country}/>
-            <ActorSelector availableGroups={availableGroups} bind:actors={actors}/>
-            <Search uniqueSubActors={availableSubActors}
-                    bind:subActors={subActors} /> -->
 
-            <div class="country-selector"><CountrySelector uniqueCountries={uniqueCountries} bind:country={country}/></div>
-            <div class="actor-selector"><ActorSelector availableGroups={availableGroups} bind:actors={actors}/></div>
+            <div class="country-selector"><CountrySelector uniqueCountries={uniqueCountries} 
+                bind:country={country}
+                bind:countryOpen={countryOpen}
+                bind:filterOpen={filterOpen}
+                bind:showSuggestions={showSuggestions}/></div>
+            <div class="actor-selector"><ActorSelector availableGroups={availableGroups} 
+                bind:actors={actors} 
+                bind:countryOpen={countryOpen}
+                bind:filterOpen={filterOpen}
+                bind:showSuggestions={showSuggestions}/></div>
             <div class="search-wrapper"><Search uniqueSubActors={availableSubActors}
-                    bind:subActors={subActors} /></div>
+                bind:subActors={subActors}
+                bind:showSuggestions={showSuggestions}
+                bind:countryOpen={countryOpen}
+                bind:filterOpen={filterOpen} /></div>
         </div>
         <div id="filters-overlay">
             <ActiveFilters  bind:actors={actors} 
@@ -180,18 +191,18 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
     ========================= */
 
     .container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    }
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        }
 
     .container :global(.maplibre-map) {
-    position: absolute !important;
-    inset: 0;               
-    width: 100% !important;
-    height: 100% !important;
-    }
+        position: absolute !important;
+        inset: 0;               
+        width: 100% !important;
+        height: 100% !important;
+        }
 
 
     /* =========================
@@ -200,28 +211,29 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 
 
     .toolbar-wrapper {
-    position: relative;
-    z-index: 30;
-    overflow: visible;
+        position: relative;
+        z-index: 30;
+        overflow: visible;
 
-    /* Center horizontally */
-    left: 50%;
-    transform: translateX(-50%);
-    top: 1rem;
+        /* Center horizontally */
+        left: 50%;
+        transform: translateX(-50%);
+        top: 1rem;
 
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
 
-    width: calc(100% - 2rem);
-    max-width: 420px;
-    }
+        width: 100%;
+        max-width: 420px;
+        }
 
     /* Toolbar itself */
 
     #toolbar {
         display: flex;
-        flex-wrap: wrap;              /* mobile wraps by default */
+        width: 100%;
+        flex-wrap: wrap;            
         align-items: center;
         gap: 0.5rem;
         overflow: visible;
@@ -270,9 +282,8 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
     .timeline-shell {
         position: relative;
         bottom: 8rem;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 25;
+        margin: 0 auto;
+        z-index: 500;
 
         width: 90%;
         max-width: 1000px;
@@ -295,9 +306,9 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
         z-index: 25;
 
         bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-
+        /* left: 50%;
+        transform: translateX(-50%); */
+        margin: 0 auto;
         width: 90%;
         max-width: 1000px;
 
