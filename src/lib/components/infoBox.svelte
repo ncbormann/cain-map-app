@@ -1,11 +1,18 @@
 <script lang="ts">
-import DANGERLogo from '$lib/img/DANGER_logo.svg';
+  import DANGERLogo from '$lib/img/DANGER_logo.svg';
   import ERCLogo from '$lib/img/ERC_logo.svg';
   import UniLogo from '$lib/img/Universität_Witten-Herdecke.svg';
   let showModal = $state(false);
+  let {showSuggestions = $bindable(),
+        countryOpen = $bindable(),
+        filterOpen = $bindable()} = $props()
 
   function openFullText() {
     showModal = true;
+    showSuggestions = false;
+    countryOpen = false;
+    filterOpen = false;
+
     // Prevent scrolling when modal is open
     document.body.style.overflow = 'hidden';
   }
@@ -29,52 +36,52 @@ import DANGERLogo from '$lib/img/DANGER_logo.svg';
 
 <!-- Modal -->
 {#if showModal}
-  <div 
-    class="modal" 
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="modal-title"
-  >
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="modal-title">About the CAIN Dataset</h2>
-        <button 
-          type="button"
-          class="close-btn" 
-          onclick={closeModal}
-          aria-label="Close modal"
-        >
-          ×
-        </button>
-      </div>
-      
-      <div class="modal-body">
-        <div class="content-section">
-          <p>The Citizen Anger Interwar News (CAIN) dataset provides information on political violence in Europe's interwar democracies (1919-1939). Political violence includes any event that saw the use of force that resulted in at least one injury by a government or a non-state actor. Violence could have been one-sided (against civilians) or reciprocal. The data is organized at the level of news reports and several news reports might describe the same event.</p>
+    <div 
+      class="modal" 
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modal-title">About the CAIN Dataset</h2>
+          <button 
+            type="button"
+            class="close-btn" 
+            onclick={closeModal}
+            aria-label="Close modal"
+          >
+            ×
+          </button>
         </div>
+        
+        <div class="modal-body">
+          <div class="content-section">
+            <p>The Citizen Anger Interwar News (CAIN) dataset provides information on political violence in Europe's interwar democracies (1919-1939). Political violence includes any event that saw the use of force that resulted in at least one injury by a government or a non-state actor. Violence could have been one-sided (against civilians) or reciprocal. The data is organized at the level of news reports and several news reports might describe the same event.</p>
+          </div>
 
-        <div class="content-section">
+          <div class="content-section">
 
-          <p>The current release of the data contains violent events for eight European democracies. We plan to add more countries in the future. The CAIN data does not extend to authoritarian regime periods, such as Germany after March 1933. Country borders depicted in the map reflect the European borders in early 1926. In future releases, we aim to implement dynamic border changes. Country borders were sourced from the CShapes dataset:</p>
-         <br>
-          <p class="citation">Schvitz, Guy, Seraina Rüegger, Luc Girardin, Lars-Erik Cederman, Nils Weidmann, and Kristian Skrede Gleditsch. 2022. "Mapping The International System, 1886-2017: The CShapes 2.0 Dataset." <em>Journal of Conflict Resolution</em> 66(1): 144–61.</p>
+            <p>The current release of the data contains violent events for eight European democracies. We plan to add more countries in the future. The CAIN data does not extend to authoritarian regime periods, such as Germany after March 1933. Country borders depicted in the map reflect the European borders in early 1926. In future releases, we aim to implement dynamic border changes. Country borders were sourced from the CShapes dataset:</p>
+          <br>
+            <p class="citation">Schvitz, Guy, Seraina Rüegger, Luc Girardin, Lars-Erik Cederman, Nils Weidmann, and Kristian Skrede Gleditsch. 2022. "Mapping The International System, 1886-2017: The CShapes 2.0 Dataset." <em>Journal of Conflict Resolution</em> 66(1): 144–61.</p>
 
-        </div>
+          </div>
 
-        <div class="content-section">
-          <p>This project was supported by the European Research Council Starting Grant "Democracy, Anger, and Elite Responses" (DANGER), Project No. 950359.</p>
-        </div>
+          <div class="content-section">
+            <p>This project was supported by the European Research Council Starting Grant "Democracy, Anger, and Elite Responses" (DANGER), Project No. 950359.</p>
+          </div>
 
-        <div class="logo-section">
-            <div class="logos-container">
-                <img src={DANGERLogo} alt="DANGER Project Logo" class="logo" />
-                <img src={ERCLogo} alt="European Research Council Logo" class="logo" />
-                <img src={UniLogo} alt="University of Witten/Herdecke Logo" class="logo" />
-            </div>
+          <div class="logo-section">
+              <div class="logos-container">
+                  <img src={DANGERLogo} alt="DANGER Project Logo" class="logo" />
+                  <img src={ERCLogo} alt="European Research Council Logo" class="logo" />
+                  <img src={UniLogo} alt="University of Witten/Herdecke Logo" class="logo" />
+              </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 {/if}
 
 <style>
@@ -108,7 +115,7 @@ import DANGERLogo from '$lib/img/DANGER_logo.svg';
   }
 
   .modal {
-    position: fixed;
+    position: fixed !important;
     top: 0;
     left: 0;
     width: 100%;

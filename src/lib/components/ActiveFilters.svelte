@@ -1,6 +1,4 @@
 <script lang="ts">
-    import * as d3 from 'd3'
-
     let {actors = $bindable(),
         subActors = $bindable(),
         dates = $bindable(),

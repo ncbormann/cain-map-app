@@ -1,7 +1,13 @@
 To do:
 
-fix the mobile layout of filter tags
-fix clickabiity on mobile
-self-host map styling
 
-country filtering; will need to reset the filtering options in dropdown
+
+
+
+priorities to fix:
+mobile format for labels and tag positions
+mobile clickability
+
+
+
+

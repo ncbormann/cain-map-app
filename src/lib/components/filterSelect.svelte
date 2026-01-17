@@ -1,6 +1,9 @@
 <script lang="ts">
-  let { actors = $bindable(), availableGroups } = $props();
-  let open = $state(false);
+  let { actors = $bindable(), availableGroups, 
+    countryOpen = $bindable(), 
+    filterOpen = $bindable(),
+  showSuggestions = $bindable()} = $props();
+  
 
   function toggleActor(group: string) {
     if (actors.includes(group)) {
@@ -12,12 +15,16 @@
 </script>
 
 <div class="dropdown">
-  <button class="dropdown-button" onclick={() => (open = !open)}>
+  <button class="dropdown-button" onclick={() => {
+    filterOpen = !filterOpen;
+    countryOpen = false;
+    showSuggestions = false;
+  }}>
     <span class="button-label">Actor Groups</span>
     <span class="button-arrow">▾</span>
   </button>
 
-  {#if open}
+  {#if filterOpen}
     <div class="dropdown-menu">
       <fieldset>
         <legend>Select groups</legend>
@@ -44,8 +51,7 @@
  
   .dropdown {
     position: relative;
-    display: inline-block;
-    z-index: 50;
+    width: 100%;
   }
 
   .dropdown-button {
@@ -53,8 +59,7 @@
     align-items: center;           /* vertically center */
     justify-content: space-between;/* text left, arrow right */
     padding: 0.5rem 0.75rem;
-    max-width: 200px;              /* allow longer names */
-    min-width: 90px;
+    width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -64,7 +69,7 @@
     border: 1px solid #ccc;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
 

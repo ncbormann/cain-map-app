@@ -1,8 +1,10 @@
 <script lang="ts">
-    let {subActors = $bindable(), //this is the object we use for the filtering
-        uniqueSubActors} = $props() // this is the reference list
+    let {subActors = $bindable(),
+        showSuggestions = $bindable(),
+        countryOpen = $bindable(),
+        filterOpen = $bindable(),
+        uniqueSubActors} = $props() 
         let searchTerm = $state('');
-        let showSuggestions = $state(false);
         let selectedIndex = $state(-1);
 
 
@@ -78,7 +80,10 @@
     type="text"
     placeholder="Search actor..."
     bind:value={searchTerm}
-    onfocus={() => (showSuggestions = true)}
+    onfocus={() => {showSuggestions = true;
+            countryOpen = false;
+            filterOpen = false;
+    }}
     onblur={() => setTimeout(() => (showSuggestions = false), 150)} 
     class="w-full p-2 rounded border shadow bg-white"
     onkeydown={handleKeyDown}
@@ -88,17 +93,6 @@
   {#if showSuggestions}
     <ul id="suggestion-list">
       {#each listMatches as x, index}
-        <!-- <li 
-            class:selected={index === selectedIndex}
-            onclick={() => selectSuggestion(x)}>
-                {#each splitForHighlight(x, searchTerm) as part}
-                    {#if part.match}
-                        <span class="match">{part.text}</span>
-                    {:else}
-                        {part.text}
-                    {/if}
-                {/each}
-            </li> -->
             <li 
                 class={`flex justify-between items-center ${index === selectedIndex ? 'selected' : ''}`}
                 onclick={() => selectSuggestion(x)}
@@ -141,15 +135,29 @@
 
         max-height: 200px;
         overflow-y: auto;
+        width: 100%;
 
         z-index: 100;
     }
 
     .search-wrapper {
         position: relative;
-        z-index: 40;          
-        flex: 0 0 auto;      
-        }
+        z-index: 40;
+
+        flex: 1 1 100%;
+        /* width: 100%; */
+    }
+
+    .search-wrapper input {
+        width: 100%;
+        box-sizing: border-box;
+
+        font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 400;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1.2rem;
+    }
 
     #suggestion-list li {
         padding: 0.625rem 0.75rem;
