@@ -124,7 +124,6 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 <div class="container">
     <div class="toolbar-wrapper">
         <div id="toolbar">
-
             <div class="country-selector"><CountrySelector uniqueCountries={uniqueCountries} 
                 bind:country={country}
                 bind:countryOpen={countryOpen}
@@ -160,7 +159,9 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 
 <div class="timeline-shell">
     <div class="info-button-wrapper">
-        <Info />
+        <Info bind:countryOpen={countryOpen}
+                bind:filterOpen={filterOpen}
+                bind:showSuggestions={showSuggestions}/>
     </div>
 
     <div id="timeline">
@@ -216,15 +217,18 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
         overflow: visible;
 
         /* Center horizontally */
-        left: 50%;
-        transform: translateX(-50%);
+        /* left: 50%;
+        transform: translateX(-50%); */
+        margin-left: auto;
+        margin-right: auto;
         top: 1rem;
 
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
 
-        width: 90%;
+        /* width: 90%; */
+        width: calc(100% - 2rem);
         max-width: 700px;
         }
 
@@ -242,6 +246,8 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
         padding: 0.75rem;
         border-radius: 10px;
         box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+
+        box-sizing: border-box;
     }
 
     /* Country selector */

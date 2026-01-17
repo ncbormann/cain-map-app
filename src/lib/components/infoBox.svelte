@@ -1,11 +1,18 @@
 <script lang="ts">
-import DANGERLogo from '$lib/img/DANGER_logo.svg';
+  import DANGERLogo from '$lib/img/DANGER_logo.svg';
   import ERCLogo from '$lib/img/ERC_logo.svg';
   import UniLogo from '$lib/img/Universität_Witten-Herdecke.svg';
   let showModal = $state(false);
+  let {showSuggestions = $bindable(),
+        countryOpen = $bindable(),
+        filterOpen = $bindable()} = $props()
 
   function openFullText() {
     showModal = true;
+    showSuggestions = false;
+    countryOpen = false;
+    filterOpen = false;
+
     // Prevent scrolling when modal is open
     document.body.style.overflow = 'hidden';
   }

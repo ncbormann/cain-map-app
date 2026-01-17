@@ -3,7 +3,7 @@
         showSuggestions = $bindable(),
         countryOpen = $bindable(),
         filterOpen = $bindable(),
-        uniqueSubActors} = $props() // this is the reference list
+        uniqueSubActors} = $props() 
         let searchTerm = $state('');
         let selectedIndex = $state(-1);
 
