@@ -74,7 +74,7 @@
   <CircleLayer
       id="clusters"
       source="europeMap"
-      hoverCursor="pointer"
+
       applyToClusters
       manageHoverState
       paint={{
