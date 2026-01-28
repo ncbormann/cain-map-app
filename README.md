@@ -15,9 +15,11 @@ This is a **SvelteKit app** using `svelte-maplibre` to present research data fro
 
 1. Clone the repository and install dependencies:
 
+```
 git clone <repo-url>
 cd <repo-folder>
 npm install
+```
 
 
 2. Prepare the data:
@@ -49,3 +51,17 @@ npm run preview
 
 ---
 
+## Running static build
+
+## This'll be a _Helpful_ Section About the Greek Letter Θ!
+
+
+## Changing the basemap style
+
+The basemap style at present is created in MapTiler: [Link Text](https://www.maptiler.com/).
+
+To make changes to it (for instance, to change the colours, or to add and remove map features like town names, streets, landmarks, roads etc) you can create an account on MapTiler, then select 'New map' -> 'Customise'. This will bring you to a screen with the basic map style you've chosen, and a menu on the left hand side which offers 'quick edits', 'layers', and 'settings'. Under layers you'll find the map features which you can show or hide. The only one that really ought to stay hidden at this time is 'country borders', because we are using our own country border file which is loaded separately.
+
+Once you've styled the map, hit 'save' -> 'create and save' -> 'publish'.
+
+Once it's published, return to the MapTiler home page, and you'll now have a section called 'My maps'. Select that, and scroll down to where it says "Use vector style". Copy that link, and in map/Maplibre_circles.svelte you'll find the place to paste it, inside the first <Maplibre> tag, on line 30. 

@@ -24,6 +24,9 @@
 
 
 
+ <!-- "https://api.maptiler.com/maps/019ba32c-43d2-74ac-bdba-1768cc85c5c2/style.json?key=GDx9s6OzDP05pKKgG4wT" -->
+
+
 <MapLibre  
   style = "https://api.maptiler.com/maps/019ba32c-43d2-74ac-bdba-1768cc85c5c2/style.json?key=GDx9s6OzDP05pKKgG4wT"
   bind:zoom={zoom}
