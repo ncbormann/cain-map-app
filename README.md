@@ -58,7 +58,7 @@ npm run preview
 
 ## Hosting the Static App on GitHub Pages
 
-First (but not yet because the deployment process isn't finished!), clone this entire repo to your own account so that you have an independent version on your own Github account.
+First (but not yet because the deployment process isn't finished!), clone this entire repo to your own account so that you have an independent version on your own Github account, then download that clone to a local file.
 
 
 #### 1. First-Time Setup (Run once)
