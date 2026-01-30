@@ -188,7 +188,7 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
     GLOBAL BASE
     ========================= */
 
-    :global(html, body) {
+    :global(html, body, #svelte) {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -203,7 +203,7 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
     .container {
         position: relative;
         width: 100%;
-        height: 100%;
+        height: 100vh;
         overflow: hidden;
         }
 

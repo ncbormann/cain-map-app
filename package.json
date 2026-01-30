@@ -8,7 +8,7 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"build:static": "STATIC_BUILD=true vite build",
-	    "deploy": "npm run build:static && git subtree push --prefix build origin gh-pages",
+	    "deploy": "npm run build:static && git add build && git commit -m 'Update static site' || true && git push origin $(git subtree split --prefix build):gh-pages --force",
 		"prepare": "svelte-kit sync || echo ''",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint ."
