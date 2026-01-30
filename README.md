@@ -82,11 +82,10 @@ npm run deploy
 
 ### 3. Setting up the repo on Github
 
-Go to the repository and follow Settings -> Pages
-Under Source, select:
-Branch: gh-pages
-
-        Folder: / (root)
+Go to the repository and follow Settings -> Pages.  
+Under Source, select:  
+Branch: gh-pages  
+ Folder: / (root)  
 Save
 
 
