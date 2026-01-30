@@ -58,54 +58,50 @@ npm run preview
 
 ## Hosting the Static App on GitHub Pages
 
-First, clone this entire repo to your own account so that you have an independent version on your own Github account. Then download the clone to work from -- that way when you deploy it'll be to your own account.
+First, fork this entire repo to your own account so that you have an independent version on your own Github account. Then clone the fork to your local machine. Ensure the repo name stays the same - or if you change it, you'll also need to update it in svelte.config.js.
 
-This repo (on my account) actually has the static app on its gh-pages branch. So you can just clone it, and then jump straight to 3. But if you want to make any changes to it, you'll need to be able to deploy from your local machine so it's worth cloning, downloading, and then deploying.
+This repo (on my account) actually has the static app on its gh-pages branch. So you can just clone it, and then jump straight to #3. But if you want to make any changes to it, you'll need to be able to deploy from your local machine so it's worth forking, it before cloning and deploying, so you can have the Github page on your own account.
 
 
 #### 1. First-Time Setup (Run once)
 
 ```bash
-npm install -D @sveltejs/adapter-static 
-
-git checkout -b gh-pages
-git rm -rf .  # Remove everything (need empty branch to initialize)
-git commit -am "Initialize gh-pages branch"
-git push origin gh-pages
-git checkout main 
+npm install 
+npm run deploy
 
 ``` 
 
-Once you're back on main, having pushed the gh-pages branch to github, you can then run the development server until you're ready to deploy the static app.
+This will build the static site, create the gh-pages branch, and push to Github.
 
 #### 2. Deploying updates
 
-To push the static version of the app to your own Github pages, first make sure any changes you've made are committed (I suggest always doing this in a local branch) then run:
+To preview the static build locally before pushing, use
 
-
-``` 
+```bash
 npm run build:static
 STATIC_BUILD=true npm run preview
 
 ``` 
-from inside the 'build' folder. That will let you test the static version on the preview server.
 
-Once that works, run:
+To deploy the updates, run:
 
-``` 
+```bash
+git add .
+git commit -m "Description of changes"
+git push
 npm run deploy
-
 ``` 
-This will build the app again, and push the static version to the gh-pages branch on github.
 
 
-### 3. Setting up the repo on Github
+### 3. Configure Github pages
 
-Go to the repository and follow Settings -> Pages.  
-Under Source, select:  
-Branch: gh-pages  
- Folder: / (root)  
-Save
+1. Go to the repository on GitHub
+2. Navigate to: **Settings** → **Pages**
+3. Under **Source**, select:
+   - **Branch**: `gh-pages`
+   - **Folder**: `/ (root)`
+4. Click **Save**
+5. Wait 2-3 minutes, then visit: `https://YOUR-USERNAME.github.io/cain-map-app/`
 
 
 ## Changing the basemap style
