@@ -1,9 +1,6 @@
+
 <script>
-    import AppContainer from '$lib/components/AppContainer.svelte' 
+    import AppContainer from '$lib/components/AppContainer.svelte'
 </script>
 
-<AppContainer /> 
-
-
-
-
+<AppContainer />

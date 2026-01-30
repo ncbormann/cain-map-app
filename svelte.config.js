@@ -5,19 +5,19 @@ const isStatic = process.env.STATIC_BUILD === 'true';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  kit: {
-    adapter: isStatic
-      ? adapterStatic({
-          pages: 'build',
-          assets: 'build',
-          fallback: 'index.html', // required for SPA routing on GH Pages
-        })
-      : adapterAuto(),
-
-    paths: {
-      base: isStatic ? '/YOUR_REPO_NAME' : '',
+    kit: {
+        adapter: isStatic
+            ? adapterStatic({
+                pages: 'build',
+                assets: 'build',
+                fallback: 'index.html',
+                strict: false
+            })
+            : adapterAuto(),
+        paths: {
+            base: isStatic ? '/cain-map-app' : ''
+        }
     }
-  }
 };
 
 export default config;
