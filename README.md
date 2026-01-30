@@ -37,14 +37,19 @@ This will generate the JSON files necessary for the app in `src/lib/data/`.
 
 ## Run the development server
 
-npm run dev -- --open
+```
+npm run dev -- --host
+``` 
+
+> This will serve the development version of the app over the local network, so it can be inspected on a phone.
 
 ---
 
 ## Build and preview production version
-
+```
 npm run build
 npm run preview
+```
 
 
 > This will build a production-ready version of the app and serve it locally for testing.
@@ -52,8 +57,13 @@ npm run preview
 ---
 
 ## Running static build
+// two build processes, see https://svelte.dev/docs/kit/adapter-static
+// still to configure static build in Main
 
-## This'll be a _Helpful_ Section About the Greek Letter Θ!
+
+
+## Hosting the static app on Github
+
 
 
 ## Changing the basemap style
