@@ -9,7 +9,7 @@
     import ActiveFilters from '$lib/components/ActiveFilters.svelte' 
     import Search from '$lib/components/search.svelte' 
     import Info from '$lib/components/infoBox.svelte' 
-    import PdfExport from '$lib/components/download_button.svelte' 
+    // import PdfExport from '$lib/components/download_button.svelte' 
     const europeGeoJson = JSON.parse(geoEurope)
     const borders = JSON.parse(borders1925)
     const boundingBoxes = JSON.parse(countryBounds)
@@ -120,33 +120,6 @@
 
 let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
 
-  
-// test
-//     import html2canvas from 'html2canvas';
-//     import jsPDF from 'jspdf';
-
-//   async function downloadPDF() {
-//     const element = document.getElementById('app-root');
-//     console.log("poo")
-
-//     const canvas = await html2canvas(element, {
-//       scale: 2,            // ↑ resolution
-//       useCORS: true,       // map tiles
-//       backgroundColor: '#ffffff'
-//     });
-
-//     const imgData = canvas.toDataURL('image/png');
-
-//     const pdf = new jsPDF({
-//       orientation: 'landscape',
-//       unit: 'px',
-//       format: [canvas.width, canvas.height]
-//     });
-
-//     pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-//     pdf.save('cain-map-export.pdf');
-//   }
-
 
 
 
@@ -191,17 +164,6 @@ let filteredData = $derived({ ...europeGeoJson, features: filterFeatures() });
     boundingBoxes = {boundingBoxes}/> 
 </div>
 
-<PdfExport
-  {actors}
-  {subActors}
-  {dates}
-  {country}
-  {countryTimelineOnly}
-  {mapZoom}
-  {filteredData}
-  {borders}
-  {boundingBoxes}
-/>
 
 <div class="timeline-shell">
     <div class="info-button-wrapper">
