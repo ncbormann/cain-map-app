@@ -56,14 +56,38 @@ npm run preview
 
 ---
 
-## Running static build
-// two build processes, see https://svelte.dev/docs/kit/adapter-static
-// still to configure static build in Main
+## Hosting the Static App on GitHub Pages
+
+First (but not yet because the deployment process isn't finished!), clone this entire repo to your own account so that you have an independent version on your own Github account.
 
 
+#### 1. First-Time Setup (Run once)
 
-## Hosting the static app on Github
+```bash
+# Create and initialize the gh-pages branch
+git checkout -b gh-pages
+git rm -rf .  # Remove everything (need empty branch to initialize)
+git commit -am "Initialize gh-pages branch"
+git push origin gh-pages
+git checkout main  
 
+``` 
+
+#### 2. Deploying updates
+
+``` 
+npm run deploy
+
+``` 
+
+### 3. Setting up the repo on Github
+
+Go to the repository and follow Settings -> Pages
+Under Source, select:
+Branch: gh-pages
+
+        Folder: / (root)
+Save
 
 
 ## Changing the basemap style
@@ -75,3 +99,10 @@ To make changes to it (for instance, to change the colours, or to add and remove
 Once you've styled the map, hit 'save' -> 'create and save' -> 'publish'.
 
 Once it's published, return to the MapTiler home page, and you'll now have a section called 'My maps'. Select that, and scroll down to where it says "Use vector style". Copy that link, and in map/Maplibre_circles.svelte you'll find the place to paste it, inside the first <Maplibre> tag, on line 30. 
+
+
+## Features still to add
+
+1. Pdf download (in progress)
+2. Timeline live-update on select
+3. Map borders respond to date selection
